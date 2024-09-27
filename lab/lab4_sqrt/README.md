@@ -1,6 +1,30 @@
 # cis11_fall2024
 ARM assembly, raspberry pi
 
+To run program:
+    * Download lab4_sqrt folder
+
+    * Open terminal and cd to this folder
+
+    * To compile in terminal type:
+            make build && ./tri
+
+    * To print hypotenuse in terminal type: 
+            echo $?
+
+Logic bug: 
+Can't figure out how to save or print r0 after bl intSqrt is called on line 145.
+
+1. Program asks user for 2 integer inputs(sideA, sideB), validates they're greater 
+   or equal to 1 & outputs them.
+2. Squares sideA, resets its variable with new value & adds it to sum.
+3. Squares sideB, resets its variable with new value & adds it to sum.
+4. Prints sum, sideA, sideB new values.
+5. Calculates square root of sum.
+6. Must type echo $? in terminal to view the square root results.  
+
+Lab 4 instructions:
+
 Program that calculates the hypotenuse of a right triangle using Pythagorean's theorem.
 
     Prompt the user to enter two integers side A and side B of the right triangle.
