@@ -20,3 +20,8 @@ make build
 it will compile the intSqrt.c into an object and then compile the tri.s and intSqrt.o together to make the program work. Then to run the program use the command
 
 ./tri
+
+Important Notes:
+
+    intSqrt wants a single parameter in r0, and will return the square root into r0
+    Here is the equation to find the hypotenuse 
