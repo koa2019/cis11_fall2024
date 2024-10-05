@@ -1,0 +1,8 @@
+To connect to class's raspberry pi server:
+
+username: rccEmail@csc11pi.ddns.net
+password: student
+
+change password with the command: passwd
+
+ssh -p 777 rccEmail @csc11pi.ddns.net

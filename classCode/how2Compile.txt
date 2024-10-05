@@ -1,0 +1,41 @@
+How to compile & run in terminal: 
+
+c:
+    Use play button on top right corner to run
+    
+    or
+
+    g++ fileName.c
+    ./a.out
+
+    or
+
+    g++ -o fileName.o fileName.c 
+    ./fileName
+
+    * if a.out already exists then:     g++ fileName.c && ./a.out
+
+c++:
+    g++ fileName.cpp
+    ./a.out
+
+    * if a.out already exists then:     g++ fileName.cpp && ./a.out
+      
+
+Troubleshooting c/c++:
+    File might need to be built/compiled first.
+
+        run > debug c/c++ file
+        run file      
+
+
+
+arm7 assembly .s:
+    as -o fileName.o fileName.s 
+    ld -o fileName fileName.o
+    ./fileName
+
+arm7 assembly with C language .s:
+    gcc -o fileName fileName.s && ./fileName
+
+
