@@ -1,44 +1,25 @@
 // How to compile & run: 
-//         g++ fileName.cp
+//         g++ fileName.c
 //         ./a.out
 // how2Compile.txt
 #include <stdio.h>
 
 int main(){
-    int r1,r2,r3,r4,r5,r6,r7,r8;
-    int width, length;
+    int n=5, c=0;
 
-    char inWidth[] = "input the width: ";
-    char* inLength = "input the length: ";
-    char *inDec = "%d";
-    char *outArea = "the area is %d\n";
-    char *outSquare = "the shape with length %d and width %d is a square\n";
-    char *outRect = "the shape with lengh %d and width %d is not a square\n";
-
-    printf(  inWidth );
-    scanf( inDec, &width );
-
-    printf( inLength );
-    scanf( inDec, &length );
-
-    r1 = length;
-    r2 = width;
-    r7 = r1 * r2;
-
-    printf( outArea, r7 );
-
-    if ( r1 == r2 ){
-        goto square;
-square:
-        printf( outSquare, length, width );
-        goto end;
-    } else {
-        goto rect;
-rect:
-        printf(outRect, length, width );
-        goto end;
+    while(n!=1){
+        if(n & 1){ 
+            n =3*n+1;
+        } else { 
+           n = n/2;   
+        }
+        // if(n%2==0){ n = n/2; } 
+        // else { n =3*n+1; }
+        c=c+1;
+        printf("%d, ",n);
     }
 
-end:
+    printf("\n%d times \n",c);
+    
     return 0;
 }

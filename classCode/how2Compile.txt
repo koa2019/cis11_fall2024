@@ -1,41 +1,41 @@
 How to compile & run in terminal: 
 
-c:
-    Use play button on top right corner to run
-    
-    or
+c/c++:
+    File needs an excutable file to run. If it doesn't already exist, then you need to build/compile it.
+    The excutable is named "fileName" FYI: It doesn't have a file extension. To build/compile:
+	
+	    * run button on top right corner to run c/c++
 
-    g++ fileName.c
-    ./a.out
+      * run tab > debug c/c++ file
 
-    or
+c file:
 
-    g++ -o fileName.o fileName.c 
-    ./fileName
+      * g++ fileName.c
+	      ./a.out
 
-    * if a.out already exists then:     g++ fileName.c && ./a.out
+	    * g++ fileName.c && ./a.out
 
-c++:
-    g++ fileName.cpp
-    ./a.out
+cpp file:
 
-    * if a.out already exists then:     g++ fileName.cpp && ./a.out
-      
-
-Troubleshooting c/c++:
-    File might need to be built/compiled first.
-
-        run > debug c/c++ file
-        run file      
-
+      * g++ fileName.cpp 
+	      ./a.out
+	
+	    * g++ fileName.cpp && ./a.out
 
 
 arm7 assembly .s:
     as -o fileName.o fileName.s 
     ld -o fileName fileName.o
     ./fileName
+    
 
 arm7 assembly with C language .s:
-    gcc -o fileName fileName.s && ./fileName
+
+    * gcc -o fileName fileName.s 
+      ./fileName
+
+    * gcc -o fileName fileName.s && ./a.out
+
+    * gcc -o fileName fileName.s && ./fileName
 
 
