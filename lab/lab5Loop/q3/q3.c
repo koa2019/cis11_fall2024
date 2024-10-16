@@ -32,7 +32,7 @@ int main(){
         printf(outGetTime);
         scanf(deref,&time);
         if(time<=1){printf(outBadTime);}
-    }while(time<=1);
+    }while(time<1);
 
     // Output distance traveled for every hour
     int distance=0;
