@@ -1,6 +1,8 @@
 @ 10-14-24 Lab 5 Loops
 @ how2Compile.txt
 @ compile & run in terminal: gcc -o q2b q2b.s && ./q2b
+@ This version resets r7 with r5 by using a mov
+
 .global main
 
 .align 4
@@ -48,11 +50,6 @@ doWhile:
     @ load num
     ldr r7, =num
     ldr r7, [r7]          @ num=r7
-
-    @ @ check if stop flag is true
-    @ cmp r4, r7          @ (stop-num==?). (r7-r4==?) (99-99==0)
-    @ bne doWhile         @ keep looping while(num!=-99),then Z==0 
-    @ beq endDoWhile
 
     @------- Check for max -------@    
     

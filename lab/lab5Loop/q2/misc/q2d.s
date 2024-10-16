@@ -1,6 +1,7 @@
 @ 10-14-24 Lab 5 Loops
-@ how2Compile.txt
 @ compile & run in terminal: gcc -o q2d q2d.s && ./q2d
+@ how2Compile.txt
+@ This version used a different cmp than the 2 previous versions.
 .global main
 
 .align 4

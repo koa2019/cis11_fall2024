@@ -1,6 +1,7 @@
 @ 10-14-24 Lab 5 Loops
 @ how2Compile.txt
 @ compile & run in terminal: gcc -o q2c q2c.s && ./q2c
+@ This version resets variable max with a store
 .global main
 
 .align 4

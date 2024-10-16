@@ -1,6 +1,6 @@
 @ 10-14-24 Lab 5 Loops
 @ how2Compile.txt
-@ compile & run in terminal: gcc -o lab5-q1 lab5-q1.s && ./lab5-q1
+@ compile & run in terminal: gcc -o q1 q1.s && ./q1
 .global main
 
 .align 4
