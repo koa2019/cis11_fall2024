@@ -27,7 +27,7 @@ main:                   @ int main(){
     push {lr}           @ push link register r14 to top of stack
 
     @ set variables
-    mov r4, #99          @ int stop=-99      
+    mov r4, #0xFFFFFF9D  @#99          @ int stop=-99      
     mov r5, #0           @ int max=0
     mov r6, #0           @ int min=0
 
