@@ -1,6 +1,7 @@
-@ 10-14-24 Lab 5 Loops
-@ how2Compile.txt
+@ 10-14-24 Lab 5 Loops Question 2: Find max and min.
 @ compile & run in terminal: gcc -o q2 q2.s && ./q2
+@ how2Compile.txt
+
 .global main
 
 .align 4

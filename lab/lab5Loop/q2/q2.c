@@ -1,6 +1,7 @@
-// How to compile & run: 
-//         g++ q2.c && ./a.out
+// 10-14-24 Lab 5 Loops Question 2: Find max and min.
+// How to compile & run:    g++ q2.c && ./a.out
 // how2Compile.txt
+
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>

@@ -1,5 +1,5 @@
 // How to compile & run: 
-//         g++ lab5.c
+//         g++ q1_char.c
 //         ./a.out
 // how2Compile.txt
 #include <stdio.h>

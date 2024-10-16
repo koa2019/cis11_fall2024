@@ -1,5 +1,5 @@
-// How to compile & run: 
-//         g++ lab5-q1.c && ./a.out
+// 10-13-24 Lab 5 Loops Question 1: Accumulate sum from 1 to n.
+// How to compile & run:    g++ q1.c && ./a.out
 // how2Compile.txt
 #include <stdio.h>
 #include <ctype.h>

@@ -1,0 +1,34 @@
+Lab 5 looping
+
+I would advise writing this in c/c++ first as it will help you to debug any issues with logic there. Please submit the arm programs in separate files with the following schema lab5probX.s in one zip file. Remember late submissions are only worth 50% at best.
+
+Q1.
+    Write a program that asks the user for a positive integer value. The program should use
+    a loop to get the sum of all the integers from 1 up to the number entered. For example,
+    if the user enters 50, the loop will find the sum of 1, 2, 3, 4, . . ., 50.
+    Input Validation: Do not accept a negative starting number.
+
+Q2.
+    Write a program with a loop that lets the user enter a series of integers. The user should
+    enter −99 to signal the end of the series. After all the numbers have been entered, the
+    program should display the largest and smallest numbers entered.
+
+Q3.
+    The distance a vehicle travels can be calculated as follows:
+    distance = speed * time.
+
+    For example, if a train travels 40 miles per hour for 3 hours, the distance traveled is
+    120 miles.
+    
+    Write a program that asks the user for the speed of a vehicle (in miles per hour) and how
+    many hours it has traveled. The program should then use a loop to display the distance the
+    vehicle has traveled for each hour of that time period. Here is an example of the output:
+    What is the speed of the vehicle in mph? 40
+    How many hours has it traveled? 3
+    Hour Distance Traveled
+    --------------------------------
+    1 40
+    2 80
+    3 120
+    Input Validation: Do not accept a negative number for speed and do not accept any
+    value less than 1 for time traveled.
