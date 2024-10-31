@@ -1,8 +1,5 @@
 @ compile & run in terminal: gcc lab6prob1a.s && ./a.out
 .global main
-@ .global getWidth
-
-@ .func getWidth
 
 .align 4
 .section .rodata        @ readonly data   
@@ -20,25 +17,16 @@ outArea: .asciz "Area: %d\n" @ like scanf syntax in C lang
 w: .word 0          @ int w=0
 l: .word 0          @ int w=0
 
-@ .text
-@ getWidth:
-@     push {lr}
-
-@     pop {lr}
 
 .text
 main:                   @ int main(){
     push {lr}           @ push link register r14 to top of stack
 
-    @mov r0, #0          @ width=0
-    @ bl getWidth
-    @ mov r4, r0
 
-@ Ask for user's input until it's a positive integer
-getWidth:
+getWidth:               @ Ask for user's input until it's a positive integer
 
-    ldr r0, =inW     // load register 0 with this string
-    bl printf          // branch link to print. Keeps track of where we've been
+    ldr r0, =inW        @ load register 0 with this string
+    bl printf           @ branch link to print. Keeps track of where we've been
 
     @ Get user's input and set variable n with input
     ldr r0, =deref      
@@ -58,12 +46,7 @@ getWidth:
     bl printf
 
 
-    @mov r0, #0          @ width=0
-    @ bl getLength
-    @ mov r5, r0
-
-@ Ask for user's input until it's a positive integer
-getLength:
+getLength:          @ Ask for user's input until it's a positive integer
 
     ldr r0, =inL     // load register 0 with this string
     bl printf          // branch link to print. Keeps track of where we've been
