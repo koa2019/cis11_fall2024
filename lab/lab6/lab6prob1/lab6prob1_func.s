@@ -1,25 +1,28 @@
 @ compile & run in terminal: gcc lab6prob1_func.s && ./a.out
+
+@ danielle: switch labels to functions
+
 .global main
 @ .global getWidth
 @ .global getLength
 @ .global getArea
-@ .global displayData
+.global displayData
 
 @ .func getWidth
 @ .func getLength
 @ .func getArea
-@ .func displayData
+.func displayData
 
 .align 4
 .section .rodata           @ readonly data   
 deref: .asciz "%d"         @ tells it a number is coming
-derefN: .asciz "%d\n"      @ tells it a number is coming
+derefN: .asciz "%d\n\n"      @ tells it a number is coming
 inW: .asciz "Input Width: "
 inL: .asciz "Input Length: "
 outGetPositive: .asciz "\nEnter a positive number: " 
 outW:    .asciz "\tWidth: %d\n"
 outL:    .asciz "\tLength: %d\n"
-outArea1: .asciz "\n\nWidth x Length = Area\n" @ like scanf syntax in C lang
+outArea1: .asciz "\nWidth x Length = Area\n" @ like scanf syntax in C lang
 outArea2: .asciz "%d x %d = " @ like scanf syntax in C lang
 
 .align 4
@@ -47,6 +50,20 @@ l: .word 0          @ int w=0
 @     ble getWidth        @ do...while(n<=0). (Z==1 or N!=V)
 @     mov r0, r4
 @     pop {lr}
+
+.text
+displayData:            @ Output results
+    push {lr}           @ push link register r14 to top of stack
+    ldr r0, =outArea1
+    bl printf
+    ldr r0, =outArea2
+    mov r1, r4
+    mov r2, r5 
+    bl printf
+    ldr r0, =derefN
+    mov r1, r6
+    bl printf
+    pop {pc}
 
 .text
 main:                   @ int main(){
@@ -101,20 +118,9 @@ getArea:                @ Caluculate Area=Width*Length
     push {lr}           @ push link register r14 to top of stack
     
     mul r6, r4, r5
-    pop {lr}
+    pop {lr}   
 
-displayData:            @ Output results
-    push {lr}           @ push link register r14 to top of stack
-    ldr r0, =outArea1
-    bl printf
-    ldr r0, =outArea2
-    mov r1, r4
-    mov r2, r5 
-    bl printf
-    ldr r0, =derefN
-    mov r1, r6
-    bl printf
-    pop {lr}
+    bl displayData
 
     mov r0, #0  @return 0
-    pop {pc}    
+    pop {pc} 
