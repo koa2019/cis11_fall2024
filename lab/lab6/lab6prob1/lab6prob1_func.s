@@ -28,25 +28,40 @@ w: .word 0          @ int w=0
 l: .word 0          @ int w=0
 
 @ .text
-@ getWidth:
-@     push {lr}
+@ getWidth:               @ Ask for user's input until it's a positive integer
 
+@     push {lr}           @ push link register r14 to top of stack
+
+@     ldr r0, =inW        @ load register 0 with this string
+@     bl printf           @ branch link to print. Keeps track of where we've been
+
+@     @ Get user's input and set variable n with input
+@     ldr r0, =deref      
+@     ldr r1, =w
+@     bl scanf
+
+@     @ validate user input is positive integer
+@     ldr r4, =w          @ load variable's address
+@     ldr r4, [r4]        @ set r4=width
+@     cmp r4, #0          @ r4-0==set flags
+@     ble getWidth        @ do...while(n<=0). (Z==1 or N!=V)
+@     mov r0, r4
 @     pop {lr}
 
 .text
 main:                   @ int main(){
     push {lr}           @ push link register r14 to top of stack
 
-    @mov r0, #0          @ width=0
-    @ bl getWidth
-    @ mov r4, r0
+    ldr r0, =w          @ width=0
+    ldr r0, [r0]
+    bl getWidth
+    mov r4, r0          @ getWidth returns the width in r0
 
-@ Ask for user's input until it's a positive integer
-getWidth:
+getWidth:               @ Ask for user's input until it's a positive integer
 
     push {lr}           @ push link register r14 to top of stack
-    ldr r0, =inW     // load register 0 with this string
-    bl printf          // branch link to print. Keeps track of where we've been
+    ldr r0, =inW        @ load register 0 with this string
+    bl printf           @ branch link to print. Keeps track of where we've been
 
     @ Get user's input and set variable n with input
     ldr r0, =deref      

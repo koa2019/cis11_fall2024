@@ -5,7 +5,6 @@
 .global main
 .global celsius
 
-
 .func celsius
 
 .align 4 
