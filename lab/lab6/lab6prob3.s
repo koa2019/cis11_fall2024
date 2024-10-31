@@ -20,6 +20,8 @@ main:                   @ int main(){
         cmp r4, r5      @ i-20==?
         bgt endFor      @ if(i>20), then end loop
 
+        @ (Fahrenheit-32)
+        sub r6, r4, #32
 
         ldr r0, =out
         mov r1, r4
