@@ -15,6 +15,7 @@ main:                   @ int main(){
     mov r4, #0          @ int i=0
     mov r5, #5          @ stop loop
     mov r6, #0          @ Celisus
+    mov r7, #5          @ (Fahrenheit-32) * 5
 
     for:
         cmp r4, r5      @ i-20==?
@@ -22,7 +23,8 @@ main:                   @ int main(){
 
         @ (Fahrenheit-32)
         sub r6, r4, #32
-
+        mul r6, r6, r7          @ (Fahrenheit-32) * 5
+        
         ldr r0, =out
         mov r1, r4
         mov r2, r6
