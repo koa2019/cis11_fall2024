@@ -1,36 +1,22 @@
+@ 10-30-24 Lab6 Prob 3
 @ To compile & run in terminal:
-@ gcc lab6prob3_func.s && ./a.out
-@ gcc lab6prob3_func.s divmod.s && ./a.out
+@ gcc lab6prob3a.s && ./a.out
+@ gcc lab6prob3a.s divmod.s && ./a.out
 
+@ ADD DIVMOD
+@ ADD int celisus (int f)
 .global main
-.global celsius
-
-.func celsius
+.global celisus
+.extern divMod
 
 .align 4 
-.section .rodata @ all constant initalized data goes here
-deref: .asciz "%d "      @ tells it a number is coming
+.section .rodata            @ all constant initalized data goes here
+deref: .asciz "%d "         @ tells it a number is coming
 derefN:  .asciz "%d\n"
 out: .asciz "%dF  == %dC\n"
 
-.text
-celsius:
-
-	push {lr}
-
-    @ Calculate Fahrenheit to Celisus
-    sub r6, r4, #32         @ C = (Fahrenheit-32)
-    mul r6, r6, r7          @ C = (Fahrenheit-32) * 5
-    mov r0, r6              @ abs() needs Celisus to be in r0
-    bl abs                  @ abs() returns value in r0
-    mov r6, r0              @ r6=r0
-
-
-    @ Divide Celisus by 9
-    mov r6, r6, lsr #3          @ C = C/2^3
-    mov r0, r6
-    pop {pc}
-
+@ .text
+@ celisus:              @ int celisus (int f)
 
 .align 4
 .text
@@ -45,12 +31,23 @@ main:                   @ int main(){
 
 
 for:
-        cmp r4, r5      @ i-20==?
-        bgt endFor      @ if(i>20), then end loop
+        cmp r4, r5      @ i-20==set flags
+        bgt endFor      @ if(i>20) Z==0 AND N==V, then end loop
 
-        mov r0, r4
-        bl celsius
-        mov r6, r0
+        @ Calculate Fahrenheit to Celisus
+        sub r6, r4, #32         @ C = (Fahrenheit-32)
+        mul r6, r6, r7          @ C = (Fahrenheit-32) * 5
+        mov r0, r6              @ abs() needs Celisus to be in r0
+        bl abs                  @ abs() returns value in r0
+        mov r6, r0              @ r6=r0
+
+
+        @ Divide Celisus by 9
+        mov r6, r6, lsr #3          @ C = C/2^3
+        @ mov r0, r6
+        @bl divMod //the division goes into r0 which is the return value for all functions
+        @mov r6, r0
+
 
         @ Output results
         ldr r0, =out
