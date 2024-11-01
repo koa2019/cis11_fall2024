@@ -8,11 +8,6 @@
 @ .global getArea
 @ .global displayData
 
-@ .func getWidth
-@ .func getLength
-@ @ .func getArea
-@ @ .func displayData
-
 .align 4
 .section .rodata           @ readonly data   
 deref: .asciz "%d"         @ tells it a number is coming
@@ -63,6 +58,29 @@ getLength:             @ int getLength() return r0=length
     ldr r0, [r0]
     pop {pc}
 
+.text 
+getArea:                @ int getArea(int width, int length)                
+    push {lr}           @ push link register r14 to top of stack    
+    mul r0, r0, r1      @ Caluculate Area=Width*Length
+    pop {pc}
+
+.text    
+displayData:            @ Output results
+    push {lr}           @ push link register r14 to top of stack
+    push {r2}
+    push {r1}
+    push {r0}
+    ldr r0, =outArea1
+    bl printf
+    ldr r0, =outArea2
+    pop {r1}             @ mov r1, r4. Print width
+    pop {r2}            @ mov r2, r5. Print length
+    bl printf
+    ldr r0, =derefN
+    pop {r1}            @ mov r1, r6
+    bl printf
+    pop {pc}
+
 .text
 main:                   @ int main(){
     push {lr}           @ push link register r14 to top of stack
@@ -81,27 +99,17 @@ doWhile2:               @ Ask for user's input until it's a positive integer
 
     cmp r0, #0         @ r4-0==set flags. Validate user input is positive integer
     ble doWhile2       @ do...while(n<=0). (Z==1 or N!=V)
-    mov r5, r0          @ set r5=length
+    mov r5, r0         @ set r5=length
 
+    mov r0, r4         @ 1st parameter for getArea(int,int)
+    mov r1, r5         @ 2nd parameter for getArea(int,int)
+    bl getArea         @ Caluculate Area. int getArea(int width, int length)
+    mov r6, r0         @ getArea() returns value in r0. Set r6=area
 
-getArea:                @ Caluculate Area=Width*Length
-    @push {lr}           @ push link register r14 to top of stack
-    
-    mul r6, r4, r5
-    @pop {pc}
-
-displayData:            @ Output results
-    @push {lr}           @ push link register r14 to top of stack
-    ldr r0, =outArea1
-    bl printf
-    ldr r0, =outArea2
-    mov r1, r4
-    mov r2, r5 
-    bl printf
-    ldr r0, =derefN
-    mov r1, r6
-    bl printf
-    @pop {pc}
+    mov r0, r4         @ 1st parameter for displayData(int,int,int)
+    mov r1, r5         @ 2nd parameter for displayData(int,int,int)
+    mov r2, r6         @ 3rd parameter for displayData(int,int,int)
+    bl displayData     @ Call displayData(int,int,int)
 
     mov r0, #0  @return 0
     pop {pc}    
