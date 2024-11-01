@@ -1,3 +1,4 @@
+@ 10-30-24 Lab6 Prob 1 Area using functions
 @ compile & run in terminal: gcc lab6prob1b.s && ./a.out
 .global main
 

@@ -4,7 +4,7 @@
 @ gcc lab6prob3b.s divmod.s && ./a.out
 
 @ ADD DIVMOD
-@ ADD int celisus (int f)
+@ Added int celisus (int f)
 
 .global main
 .global celsius

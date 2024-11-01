@@ -1,4 +1,4 @@
-@ 10-30-24 Lab6 Prob 3
+@ 10-30-24 Lab6 Prob 3 Fahrenheit to Celisus using Functions
 @ To compile & run in terminal:
 @ gcc lab6prob3c.s && ./a.out
 @ gcc lab6prob3c.s divmod.s && ./a.out

@@ -1,10 +1,7 @@
 @ 10-30-24 Lab6 Prob 3
 @ To compile & run in terminal:
 @ gcc lab6prob3a.s && ./a.out
-@ gcc lab6prob3a.s divmod.s && ./a.out
 
-@ ADD DIVMOD
-@ ADD int celisus (int f)
 .global main
 .global celisus
 .extern divMod

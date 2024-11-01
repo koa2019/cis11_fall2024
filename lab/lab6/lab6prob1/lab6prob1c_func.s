@@ -1,6 +1,5 @@
+@ 10-31-24 Lab 6 Prob1
 @ compile & run in terminal: gcc lab6prob1c_func.s && ./a.out
-
-@ danielle: switch labels to functions
 
 .global main
 .global getWidth
@@ -97,19 +96,19 @@ doWhile2:               @ Ask for user's input until it's a positive integer
 
     bl getLength        @ Call function
 
-    cmp r0, #0         @ r4-0==set flags. Validate user input is positive integer
-    ble doWhile2       @ do...while(n<=0). (Z==1 or N!=V)
-    mov r5, r0         @ set r5=length
+    cmp r0, #0          @ r4-0==set flags. Validate user input is positive integer
+    ble doWhile2        @ do...while(n<=0). (Z==1 or N!=V)
+    mov r5, r0          @ set r5=length
 
-    mov r0, r4         @ 1st parameter for getArea(int,int)
-    mov r1, r5         @ 2nd parameter for getArea(int,int)
-    bl getArea         @ Caluculate Area. int getArea(int width, int length)
-    mov r6, r0         @ getArea() returns value in r0. Set r6=area
+    mov r0, r4          @ 1st parameter for getArea(int,int)
+    mov r1, r5          @ 2nd parameter for getArea(int,int)
+    bl getArea          @ Caluculate Area. int getArea(int width, int length)
+    mov r6, r0          @ getArea() returns value in r0. Set r6=area
 
-    mov r0, r4         @ 1st parameter for displayData(int,int,int)
-    mov r1, r5         @ 2nd parameter for displayData(int,int,int)
-    mov r2, r6         @ 3rd parameter for displayData(int,int,int)
-    bl displayData     @ Call displayData(int,int,int)
+    mov r0, r4          @ 1st parameter for displayData(int,int,int)
+    mov r1, r5          @ 2nd parameter for displayData(int,int,int)
+    mov r2, r6          @ 3rd parameter for displayData(int,int,int)
+    bl displayData      @ Call displayData(int,int,int)
 
     mov r0, #0  @return 0
     pop {pc}    
