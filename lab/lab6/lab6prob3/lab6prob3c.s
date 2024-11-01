@@ -3,18 +3,16 @@
 @ gcc lab6prob3c.s && ./a.out
 @ gcc lab6prob3c.s divmod.s && ./a.out
 
-@ ADD DIVMOD
-@ ADD int celisus (int f)
-
 .global main
 .global celsius             @ int celisus(int f)
-
+.extern divMod
 
 .align 4 
 .section .rodata            @ all constant initalized data goes here
 deref: .asciz "%d "         @ tells it a number is coming
 derefN:  .asciz "%d\n"
 out: .asciz "%dF  == %dC\n"
+outDivMod: .asciz "\t%d.%d\n"
 
 .text
 celsius:                    @ int celisus(int r0=f)
@@ -22,13 +20,22 @@ celsius:                    @ int celisus(int r0=f)
 	push {lr}
 
     @ Calculate Fahrenheit to Celisus
+
     mov r1, #5              @ (F-32) * 5
     sub r0, r0, #32         @ C = (F-32)
     mul r0, r0, r1          @ C = (F-32) * 5
     bl abs                  @ abs() returns value in r0
 
     @ Divide Celisus by 9
-    mov r0, r0, lsr #3      @ celisus = celisus/2^3
+    @mov r0, r0, lsr #3     @ celisus = celisus/2^3
+    mov r1, #9
+    bl divMod               @ int divMod(int r0=(F-32)*5, int r1=9) returns r0=division and r1=decimal
+    @ push {r1}             @ output the divison as a float
+    @ push {r0}
+    @ ldr r0, =outDivMod
+    @ pop {r1} 
+    @ pop {r2} 
+    @bl printf
     pop {pc}
 
 
