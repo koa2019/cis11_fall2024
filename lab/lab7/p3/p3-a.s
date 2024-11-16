@@ -3,7 +3,7 @@
 @       g++ p3-a.s
 @       ./a.out
 @
-@ getInput() let's user input 6 numbers AND printArr prints array
+@ getInput() let's user input 6 numbers AND printArr prints
 .global main
 
 
@@ -37,7 +37,7 @@ main:                   @ int main(){
     bl getInput          @ getInput(int arr[]=r0, int size=r1)
 
     @ load arr for print function
-    ldr r5, =arr1
+    ldr r5, =arr2
     ldr r6, =size
     ldr r6, [r6]
     b printArr

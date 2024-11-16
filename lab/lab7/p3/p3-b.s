@@ -21,7 +21,7 @@ ty: .asciz "\nGood Bye\n\n"
 .align 4
 .section .data
 size: .word 6          @ int size=6
-arr1: .word 1,2,3,4,5,6
+arr1: .word 11,12,13,14,15,17
 arr2: .skip 24 @int arr[10]. Each element is 4 bytes, 6*4=24 spaces
 
 
@@ -33,9 +33,21 @@ main:                   @ int main(){
     ldr r5, =arr1
     ldr r6, =size
     ldr r6, [r6]
-    b printArr
+    bl printArr
 
-printArr:               @ Output array
+    @ Reverse array's order
+    @arr2[0]=arr[5];
+
+end:
+    ldr r0, =ty
+    bl printf           @ output endOfFile
+
+    mov r0, #0  
+    pop {pc}            @ return 0 to where i was. Pop whatever on top of stack into program counter r15
+
+
+printArr:               @ printArr(int arr[]=r5, int size=r6)
+    push {r4-r6, lr}
     mov r4, #0          @ int i=0
 
 for2:                   @ output arr
@@ -53,53 +65,4 @@ for2:                   @ output arr
     bal for2            @ keep looping
 
 endFor2:
-
-    ldr r0, =ty
-    bl printf           @ output endOfFile
-
-    mov r0, #0  
-    pop {pc}            @ return 0 to where i was. Pop whatever on top of stack into program counter r15
-
-getInput:
-
-    push {r4, lr}
-    @ Output instructions
-    ldr r0, =out1
-    bl printf
-
-for:
-    cmp r4, r6          @ (i-size)==set flags
-    bge endFor          @ if(i>size)(Z==0 or N==V), then exit for loop  
-
-
-doWhile:  @ Ask for user's input until it's a positive integer
-
-    @ Prompt for user's input
-    ldr r0, =outGetN
-    bl printf
-
-    @ Get and set variable with user input
-    ldr r0, =deref
-    mov r1, r5          @ mov r1=arr
-    bl scanf			@ scanf( "%d", &a[i] )
-
-    @ validate user input is positive integer
-    ldr r0, [r5]        @ load variable's address
-    cmp r0, #0          @ r4-0==set flags
-    ble doWhile         @ do...while(n<=0). (Z==1 or N!=V)
-
-    @ output user's input
-    ldr r0, =outNum
-    ldr r1, [r5]
-    bl printf
-    
-    increForLoop:
-    @ incre for loop & the array
-	add r5, #4			@ arr[i]++. +4-bytes
-    add r4, r4, #1      @ i++ 
-    bal for             @ keep looping
-
-endFor:
-	mov r0, r2
-	pop {r4, pc} 		@ return arr1;
-   
+    pop {r4-r6, lr}
