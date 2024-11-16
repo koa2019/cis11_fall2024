@@ -1,19 +1,23 @@
-@ 11-15-24 Lab 7 Array Question 1: Find max and min.
+@ 11-15-24 Lab 7 Array Question 1: Find total,average, max and min rainfall.
 @ compile & run in terminal: 
 @       g++ maxMin_3.s
 @       ./a.out
-@ how2Compile.txt
+@       gcc p2.s divmod.s && ./a.out
 
 .global main
+.extern divMod
+
 
 .align 4
 .section .rodata            @ readonly data   
 deref:   .asciz "%d"        @ tells it a number is coming
 derefN:  .asciz "%d\n"
-out1:    .asciz "\n\nInput as many integers as you want and\nthe program will find the largeset and smallest number.\n\n"
+out1:    .asciz "\n\nEnter how many inches of rainfall each month recieved.\n\n"
 outGetN: .asciz "Enter an integer: " 
 outNum:    .asciz "\n\tYou entered: %d\n"
-outMax:  .asciz "\nMax: %d\n"
+outSum:  .asciz "\nTotal Rainfall: %d\n"
+outAvg: .asciz "Average Rainfall: %d\n"
+outMax:  .asciz "Max: %d\n"
 outMin:  .asciz "Min: %d\n"
 outNewMax: .asciz "\t\tNew Max: %d!\n"
 outNewMin: .asciz "\t\tNew Min: %d!\n"
@@ -22,8 +26,8 @@ ty: .asciz "Good Bye\n\n"
 
 .align 4
 .section .data
-len: .word 10          @ int size=10
-arr: .skip 40 @int arr[10]. Each element is 4 bytes, 10*4=40 spaces
+len: .word 12          @ int size=10
+arr: .skip 48 @int arr[10]. Each element is 4 bytes, 12*4=48 spaces
 max: .word 0            @ int max=0
 min: .word 0            @ int min=0
 
@@ -36,10 +40,11 @@ main:                   @ int main(){
     mov r4, #0          @ int i=0
     mov r5, #0          @ int max=0
     mov r6, #0          @ int min=0
-    
+    mov r9, #0          @ int sum=0
+
     @ get arr ready for user input
     ldr r7, =arr
-    ldr r8, =len        @ int size=10
+    ldr r8, =len        @ int size=12
     ldr r8,[r8]
 
     @ Output instructions
@@ -50,6 +55,9 @@ for:
     cmp r4, r8          @ (i-size)==set flags
     bge endFor          @ if(i>size)(Z==0 or N==V), then exit for loop  
 
+
+doWhile:  @ Ask for user's input until it's a positive integer
+
     @ Prompt for user's input
     ldr r0, =outGetN
     bl printf
@@ -59,10 +67,19 @@ for:
     mov r1, r7          @ mov r1=arr
     bl scanf			@ scanf( "%d", &a[i] )
 
+    @ validate user input is positive integer
+    ldr r0, [r7]        @ load variable's address
+    //ldr r0, [r0]        @ load variable's value
+    cmp r0, #0          @ r4-0==set flags
+    ble doWhile         @ do...while(n<=0). (Z==1 or N!=V)
+
     @ output user's input
     ldr r0, =outNum
     ldr r1, [r7]
     bl printf
+
+    ldr r0, [r7]
+    add r9, r0          @ sum = sum+arr[i]
 
 isMax:
     ldr r0, [r7]
@@ -73,23 +90,27 @@ isMax:
 setMax:
     ldr r5, [r7]          @ max=arr[i]
     //mov r5, r7          @ max=arr[i]. Reset max with current input   
-    ldr r0, =outNewMax  @ output msg each time a new max is found
-    mov r1, r5
-    bl printf
+    @ ldr r0, =outNewMax  @ output msg each time a new max is found
+    @ mov r1, r5
+    @ bl printf
     bal isMin           @ branch to if input is a new min 
 
 isMin:  
     ldr r0, [r7]
+    cmp r4, #0
+    beq setMinZero
     cmp r0, r6          @ (r7-r6==?). (input-min==N? V?)
     blt setMin          @ if(input<min)->(N!=V)
     bge increForLoop          @ if(input>=min)->(N==V). branch to endFor loop
 
+setMinZero:
+    ldr r6, [r7]          @ min=arr[0]
 setMin:
     ldr r6, [r7]          @ min=arr[i]
     //mov r6, r7          @ min=arr[i]. Reset min with current input
-    ldr r0, =outNewMin
-    mov r1, r6
-    bl printf           @ output msg each time a new max is found
+    @ ldr r0, =outNewMin
+    @ mov r1, r6
+    @ bl printf           @ output msg each time a new max is found
     bal increForLoop    @ branch to if input is a new min 
 
 increForLoop:
@@ -100,13 +121,26 @@ increForLoop:
 
 endFor:
 
-	@ ldr r0, =arr
-	@ mov r1, #3
-	@bl outputArr 		@ outputArr( arr, arrSize);
     @bl printArr
     b outResults
 
 outResults: 
+
+    ldr r0, =outSum
+    mov r1, r9
+    bl printf
+
+    // Calculate average rainfall for the year 
+    ldr r0, =arr
+    ldr r1, =len
+    //ldr r1, [r1]
+    bl divMod               @ int divMod(r0=arr[], r1=size)
+
+    mov r1, r0
+    ldr r0, =outAvg
+    bl printf
+
+
     ldr r0, =outMax
     mov r1, r5
     bl printf           @ output max
@@ -136,28 +170,3 @@ outResults:
 @     add r4, r4, #1      @ i++ 
 @     bal printArr             @ keep looping
 
-
-outputArr: 				@ void outputArr( int arr[], int size ){
-/*
-r0 = array address
-r1 = size
- */
-	push {r4,lr}
-	mov r4, #0			@ i = 0
-outputLoop:				@ for( int i = 0; i < size; i++ ){
-	cmp r4, r1			@ i < size
-	bge outputLoopEnd
-	
-	push {r0-r3}
-	ldr r2, [r0]		//loads arr[i]
-	mov r1, r4			//copies my i
-	ldr r0, =derefN		//str loaded
-	bl printf 			@ printf( "a[%d] = %d\n", i, arr[i] );
-	pop {r0-r3}
-	//TODO come back
-	add r4, #1			@ i++
-	add r0, r4, lsl #2	//next address in the array r0=r0+(r4*4)
-	bal outputLoop
-outputLoopEnd:			@ }
-	pop {r4,pc} @ return;
-@ }
