@@ -1,6 +1,8 @@
-@ To compile & run in terminal: gcc -o fileName fileName.s && ./fileName
+@ To compile & run in terminal: 
+@ 1. g++ fileName.s
+@    ./a.out
+@ 2. gcc -o fileName fileName.s && ./fileName
 .global main
-.func main
 
 .align 4
 .section .rodata @ all constant initalized data goes here

@@ -1,0 +1,28 @@
+Lab 7 Array
+
+I would advise writing this in c/c++ first as it will help you to debug any issues with logic there. 
+Please submit the arm programs in separate files with the following schema lab7probX.s in one zip file. 
+Remember late submissions are only worth 50% at best.
+
+1. Largest/Smallest Array Values
+	Write a program that lets the user enter ten values into an array. 
+	The program should then display the largest and smallest values stored in the array.
+
+2. Rainfall Statistics
+	Write a program that lets the user enter the total rainfall for each of 12 months 
+	into an array of 4-byte integers. 
+	The program should calculate and display:
+		1. the total rainfall for the year
+		2. the average monthly rainfall, 
+		3. the months with the highest and lowest amounts.
+	Input Validation: Do not accept negative numbers for monthly rainfall figures.
+	Note: use the divMod function from the usefulFunctions on the github to perform division. 
+	      When compiling this program be sure to include the divmod.s file. Ex. gcc yourfile.s divmod.s
+
+3. Reverse An Array Inplace
+	Develop a program that reverses an array of integers in-place. 
+	This program should reserve a 6 element 4-byte array that the user can fill with their own numbers. 
+	Output: 
+		* the user inputed array 
+		* then reverse it inplace and output the resulting reversed array.
+	Note: At a minimum use functions for the inputting the array and the outputing the array.

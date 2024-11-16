@@ -20,7 +20,7 @@ ty: .asciz "Good Bye\n\n"
 
 .align 4
 .section .data
-input: .word 0            @ int input=0
+input: .word 0          @ int input=0
 max: .word 0            @ int max=0
 min: .word 0            @ int min=0
 
@@ -59,7 +59,7 @@ isStop:
 isMax:
     cmp r7,r5           @ (r7-r5==?). (input-max==N? V?)
     bgt setMax          @ if(input>=max)->(N==V)
-    ble isMin        @ if(num<=max)->(Z==1 OR N!=V)
+    ble isMin           @ if(num<=max)->(Z==1 OR N!=V)
 
 setMax:
     mov r5, r7          @ max=r7 reset max with current input   
