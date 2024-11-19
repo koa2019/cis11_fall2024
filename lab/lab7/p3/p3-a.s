@@ -11,7 +11,7 @@
 .section .rodata            @ readonly data   
 deref:   .asciz "%d"        @ tells it a number is coming
 derefN:  .asciz "%d\n"
-out1:    .asciz "\n\nProgram reverses the order of an array.\n\n"
+out1:    .asciz "\n\nProgram reverses the order of an array[6].\n\n"
 outGetN: .asciz "Enter a number: " 
 outNum:    .asciz "\tYou entered: %d\n"
 outArr:  .asciz "%d, " 
@@ -21,7 +21,7 @@ ty: .asciz "\nGood Bye\n\n"
 .align 4
 .section .data
 size: .word 6          @ int size=6
-arr1: .word 1,2,3,4,5,6
+arr1: .word 131,412,53,2,25,66
 arr2: .skip 24 @int arr[10]. Each element is 4 bytes, 6*4=24 spaces
 
 
@@ -29,25 +29,40 @@ arr2: .skip 24 @int arr[10]. Each element is 4 bytes, 6*4=24 spaces
 main:                   @ int main(){
 	str lr, [sp, #-4]!  @ push {lr}
 
+    @ @ get arr ready for user input
+    @ ldr r5, =arr2
+    @ ldr r6, =size        @ int size=12
+    @ ldr r6, [r6]    
+    @ bl getInput          @ getInput(int arr[]=r0, int size=r1)
 
-    @ get arr ready for user input
-    ldr r5, =arr2
-    ldr r6, =size        @ int size=12
-    ldr r6, [r6]    
-    bl getInput          @ getInput(int arr[]=r0, int size=r1)
+    @ @ load user arr for print function
+    @ ldr r5, =arr2
+    @ ldr r6, =size
+    @ ldr r6, [r6]
+    @ b printArr
 
-    @ load arr for print function
-    ldr r5, =arr2
+    @ load predefined arr for print function
+    ldr r5, =arr1
     ldr r6, =size
     ldr r6, [r6]
-    b printArr
+    bl printArr
+
+end:
+    ldr r0, =ty
+    bl printf           @ output endOfFile
+
+    mov r0, #0  
+    pop {pc}            @ return 0 to where i was. Pop whatever on top of stack into program counter r15
+
+@@ --------- FUNCTION IMPLEMENTATIONS --------- @@
 
 printArr:               @ Output array
+    push {lr}
     mov r4, #0          @ int i=0
 
-for2:                   @ output arr
+printFor:               @ output arr
     cmp r4, r6          @ (i-size)==set flags
-    bge endFor2          @ if(i>size)(Z==0 or N==V), then exit for loop  
+    bge endPrintFor          @ if(i>size)(Z==0 or N==V), then exit for loop  
 
     @ output arr[i]
     ldr r0, =outArr
@@ -57,22 +72,21 @@ for2:                   @ output arr
     @ incre for loop & the array
 	add r5, #4			@ arr[i]++. +4-bytes
     add r4, r4, #1      @ i++ 
-    bal for2            @ keep looping
+    bal printFor            @ keep looping
 
-endFor2:
+endPrintFor:
 
     ldr r0, =ty
     bl printf           @ output endOfFile
-
-    mov r0, #0  
     pop {pc}            @ return 0 to where i was. Pop whatever on top of stack into program counter r15
 
+
+@ Prompt for user's array of integers
 getInput:
 
-    push {r4, lr}
-    @ Output instructions
+    push {lr}       @ push {lr}    
     ldr r0, =out1
-    bl printf
+    bl printf           @ Output instructions
 
 for:
     cmp r4, r6          @ (i-size)==set flags
@@ -107,6 +121,6 @@ doWhile:  @ Ask for user's input until it's a positive integer
     bal for             @ keep looping
 
 endFor:
-	mov r0, r2
-	pop {r4, pc} 		@ return arr1;
+	mov r0, r2          @ return user array in r0
+	pop {pc} 		@ return arr1;
    
