@@ -1,6 +1,6 @@
 @ 11-15-24 Lab 7 Array Question 3: Reverse array's order.
 @ compile & run in terminal: 
-@       g++ p3-b.s
+@       g++ p3-c.s
 @       ./a.out
 @
 @ printArr outputs a predefined array
@@ -14,7 +14,9 @@ derefN:  .asciz "%d\n"
 out1:    .asciz "\n\nProgram reverses the order of an array.\n\n"
 outGetN: .asciz "Enter a number: " 
 outNum:  .asciz "\nYou entered:\n"
-outArr:  .asciz "%d, " 
+outArr:  .asciz "%d, "
+outUsrArrIndx: .asciz "userArr[%d]=%d == " 
+outRevArrIndx: .asciz "revArr[%d] = \n"
 outR: .asciz "\nReversed Array: \n"
 ty: .asciz "\n\nGood Bye\n\n"
 
@@ -45,7 +47,7 @@ main:                   @ int main(){
     ldr r0, =defUserArr
     ldr r1, =size
     ldr r1, [r1]
-    bl reversed
+    bl reversed         @ reversed(arr=r0,size=r1)
 
 end:
     ldr r0, =ty
@@ -59,31 +61,37 @@ end:
 
 reversed:               @ printArr(int userArr[]=r0, int size=r1)
 
-
     push {r4-r6, lr}    @ protect safe registers from being overwritten in function
 
-
+    @ Do this:
     @ Reverse array
-    @ for(int i = 0, j=size-1; i < size; i++, j--){
-    @     revArr[j]=userArr[i];
-    @ }
+    @ for(int i=0, j=size-1; i<size; i++, j--){
+    @     revArr[j]=userArr[i]; }
 
+    @ set variables before for the loop
     mov r4, #0          @ int i=0
     mov r5, r1          @ int j=size==6
-    sub r5, r5, #1      @ j=6-1
+    sub r5, r5, #1      @ j=6-1. My descending index for the reversed array
     mov r6, r1          @ stop=size==6
     mov r7, r0          @ r7=userArr[]
     ldr r8, =revArr     @ r8=revArr
 
     @ {
-    forI:                   @ output arr
-        cmp r4, r6             @ (i-size)==set flags
-        bge endForI          @ if(i>size)(Z==0 or N==V), then exit for loop  
+    forI:                    @ output arr
+        cmp r4, r6           @ (i-size)==set flags
+        bge endForI          @ if(i>=size)(Z==0 or N==V), then exit for loop  
 
-        @ @ output userArr[i]
-        @ ldr r0, =outArr
-        @ ldr r1, [r7]
-        @ bl printf
+        @ output userArr[i]
+        ldr r0, =outUsrArrIndx      @ =outArr
+        mov r1, r4                  @ i
+        ldr r2, [r7]                @ load value of userArr[i]
+        bl printf                   
+
+        @ output revArr index
+        ldr r0, =outRevArrIndx
+        mov r1, r5
+        bl printf
+
 
         @ increament i loop & the userArr array's address
         add r7, #4			@ userArr[i]++. +4-bytes    
