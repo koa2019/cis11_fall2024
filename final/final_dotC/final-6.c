@@ -1,13 +1,19 @@
+// Danielle F
+// 12-01-2024 Final Problem 1: Mastermind
+//
 // How to compile & run on pi4: 
 //         g++ final-6.c
 //         ./a.out
 // how2Compile.txt
-
-// final-6.c:
+//
+//   final-6.c:
 // * I went back to version final-4 because switching the arrays to char instead of int created way too 
 //   many problems.
 // * Fixed the BUG when the user inputs their code. Before scanf was saving all 4 digits in index zero. I
 //   fixed it by adding a loop and then deferencing each index of the array inside of the loop.
+//
+// TO DO:
+// * Add a random function to set code array.
 
 #include <stdio.h>
 
@@ -65,6 +71,7 @@ int main(){
     //printf(inCode);
     //scanf(deref, &guess);
 
+    int i=0;
     for(int i=0;i<size;i++){
 
         //guess[i]=getchar();
@@ -86,7 +93,6 @@ int main(){
 
     // Output code and guess 
 
-    int i=0;
     printf(outCode);
     for(i=0; i<size;i++){
         printf(deref, code[i] );
