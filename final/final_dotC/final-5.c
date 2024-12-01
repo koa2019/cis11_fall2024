@@ -1,16 +1,15 @@
 // How to compile & run on pi4: 
-//         g++ final-4.c
-//         ./a.out
+//         g++ final-5.c && ./a.out
 // how2Compile.txt
 
-// final-4.c:
-// * builds on final-3 and moves the for loop that checks if the two arrays are equal into 
-//   a function that returns 1 or 0 if they are equal.
-// * checkPassword func outputs whether each index is equal or not.
+// final-5.c:
+// * changed the arrays from int to char
+// * Added user input to get one character at a time
+// * BUG: outputs ASCII values instead of numbers. I wont know how to change that in assembly.
 
 #include <stdio.h>
 
-int checkPassword(int *code, int *guess, const int size){
+int checkPassword(char code[], char guess[], const int size){
 
     char outI[]     = "[%d]: ";
     char outEq[]    = " %d==%d\n";
@@ -41,22 +40,25 @@ int checkPassword(int *code, int *guess, const int size){
 int main(){
 
     char inCode[] = "input 4 digit code ";
-    char *deref = "%d";
-    char *derefN = "%d\n";
-    char *endl = "\n";
-    char *outCode = "\nCode:  ";
-    char *outGuess = "\nGuess: ";
-    char *outWrong = "Wrong Guess. \n";
-    char *outRight = "Right Guess. \n";    
-    char *outTy = "\nGood Bye";
+    char deref[] = "%d";
+    char derefN[] = "%d\n";
+    char endl[] = "\n";
+    char outCode[] = "\nCode:  ";
+    char outGuess[] = "\nGuess: ";
+    char outWrong[] = "Wrong Guess. \n";
+    char outRight[] = "Right Guess. \n";    
+    char outTy[] = "\nGood Bye";
 
     int size=4;    
-    int code[] = {6,6,1,5};
-    int guess[] = {6,2,1,4};
+    char code[] = {'6','6','1','5'}; //{6,2,1,5};
+    char guess[] = {'6','6','1','5'}; //{6,2,1,4};
  
 
     // Get user's guess
-    // printf(inCode);
+    printf(inCode);
+    // for(int i=0;i<4;i++){
+    //     guess[i]=getchar();
+    // }
     // scanf(deref, &guess);
 
     // Check user's guess to the code

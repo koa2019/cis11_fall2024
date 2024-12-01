@@ -1,12 +1,13 @@
 // How to compile & run on pi4: 
-//         g++ final-4.c
+//         g++ final-6.c
 //         ./a.out
 // how2Compile.txt
 
-// final-4.c:
-// * builds on final-3 and moves the for loop that checks if the two arrays are equal into 
-//   a function that returns 1 or 0 if they are equal.
-// * checkPassword func outputs whether each index is equal or not.
+// final-6.c:
+// * I went back to version final-4 because switching the arrays to char instead of int created way too 
+//   many problems.
+// * Fixed the BUG when the user inputs their code. Before scanf was saving all 4 digits in index zero. I /
+//   fixed it by adding a loop and then deferencing each index of the array inside of the loop.
 
 #include <stdio.h>
 
@@ -40,15 +41,17 @@ int checkPassword(int *code, int *guess, const int size){
 
 int main(){
 
+    char outInstruct[] = "\nWelcome to Mastermind. Guess the 4 digit secret code to win!\n\n";
     char inCode[] = "input 4 digit code ";
-    char *deref = "%d";
-    char *derefN = "%d\n";
-    char *endl = "\n";
-    char *outCode = "\nCode:  ";
-    char *outGuess = "\nGuess: ";
-    char *outWrong = "Wrong Guess. \n";
-    char *outRight = "Right Guess. \n";    
-    char *outTy = "\nGood Bye";
+    char inOneDigit[] = "input a digit and then press Enter: ";
+    char deref[] = "%d";
+    char derefN[] = "%d\n";
+    char endl[] = "\n";
+    char outCode[] = "\nCode:  ";
+    char outGuess[] = "\nGuess: ";
+    char outWrong[] = "Wrong Guess. \n";
+    char outRight[] = "Right Guess. \n";    
+    char outTy[] = "\nGood Bye";
 
     int size=4;    
     int code[] = {6,6,1,5};
@@ -56,8 +59,21 @@ int main(){
  
 
     // Get user's guess
-    // printf(inCode);
-    // scanf(deref, &guess);
+    printf(outInstruct);
+
+    //BUG
+    //printf(inCode);
+    //scanf(deref, &guess);
+
+    for(int i=0;i<size;i++){
+
+        //guess[i]=getchar();
+
+        printf(inOneDigit);
+        scanf(deref, &guess[i]);
+        //scanf(deref, guess[i]);
+    }
+
 
     // Check user's guess to the code
     int isPassword = checkPassword(code,guess,size);
