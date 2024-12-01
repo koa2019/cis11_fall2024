@@ -45,12 +45,12 @@ bubblesort: 				@ void bubblesort( int arr[], int len );
 	sub r1, r1, #1			//len - 1 since we never len by itself
 	mov r2, #0				//i = 0
 	bsOuterLoop:			@ for( int i = 0; i < len - 1; i++ ){
-		cmp r2, r1
+		cmp r2, r1			@ (i-len-1)
 		bge bsOuterLoopEnd
 		//set up next for loop
-		mov r3, #0
+		mov r3, #0			@ int j=0
 		bsInnerLoop: 		@ for( int j = 0; j < len - 1; j++ ){
-			cmp r3, r1
+			cmp r3, r1		@ (j-len-1)
 			bge bsInnerLoopEnd
 				//load arr[j]
 				add r4, r0, r3, lsl #2	//the address of arr[j]

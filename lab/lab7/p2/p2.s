@@ -1,4 +1,4 @@
-@ 11-15-24 Lab 7 Array Question 1: Find total,average, max and min rainfall.
+@ 11-15-24 Lab 7 Array Question 2: Find total,average, max and min rainfall.
 @ compile & run in terminal: 
 @       g++ maxMin_3.s
 @       ./a.out
@@ -12,15 +12,10 @@
 .section .rodata            @ readonly data   
 deref:   .asciz "%d"        @ tells it a number is coming
 derefN:  .asciz "%d\n"
-out1:    .asciz "\n\nEnter how many inches of rainfall each month recieved.\n\n"
-outGetN: .asciz "Enter an integer: " 
+out1:    .asciz "\n\nProgram reverses the order of an array.\n\n"
+outGetN: .asciz "Enter a number: " 
 outNum:    .asciz "\n\tYou entered: %d\n"
-outSum:  .asciz "\nTotal Rainfall: %d\n"
-outAvg: .asciz "Average Rainfall: %d\n"
-outMax:  .asciz "Max: %d\n"
-outMin:  .asciz "Min: %d\n"
-outNewMax: .asciz "\t\tNew Max: %d!\n"
-outNewMin: .asciz "\t\tNew Min: %d!\n"
+outArr:  .asciz "%d, "
 ty: .asciz "Good Bye\n\n"
 
 
@@ -169,4 +164,3 @@ outResults:
 @ 	add r7, #4			@ arr[i]++. +4-bytes
 @     add r4, r4, #1      @ i++ 
 @     bal printArr             @ keep looping
-
