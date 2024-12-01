@@ -1,1 +1,0 @@
-g++ fileName.c

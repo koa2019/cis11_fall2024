@@ -1,0 +1,27 @@
+Final Project
+
+    Due Friday by 11:59pm Points 100 Submitting a file upload File Types zip Available Nov 13 at 12am - Dec 6 at 11:59pm
+
+Instructions:
+
+Below are the choices for the final project, which is part of your final exam, choose one. You must work individually on your final project. All code must be done in ARM Assembly (only exemption is using C with a main function call to ARM assembly functions – however this must not comprise of more than 25% of your code base). All submissions must have a readme document that explains how to run, compile, build, and play your project. These instructions need to be written for someone that has no experience in computer science. I also want a video for all projects of you playing the game if you are building a GPIO project show me the board as well as any console content.
+
+Projects (pick one):
+
+    Master Mind - In this project, you will write an ARM32 assembly program to implement a simplified Mastermind game. The program will use arrays to store a predefined 4-digit secret code and the user’s guesses. You will need to implement functions such get input (to read user input using scanf), check guess (to compare the guess with the secret code), and print feedback (to display the number of exact and partial matches using printf). The game will loop up to 10 times, providing feedback after each guess and ending if the player guesses correctly or exhausts all attempts. mastermind game instructions.jpg
+
+ 
+
+    Ladder Game (extra credit 10%) – This game involves a series of LEDs arranged in a row and a button. The goal is to progress from the bottom LED to the top by pressing the button at the right time. The LEDs will light up sequentially, one at a time. To advance, press the button while the current LED is lit. If you press the button when an LED is not lit, your progress resets to the bottom. This game is similar to the "Stacker" arcade game.
+
+ 
+
+    Street Crossing (extra credit 10%) – This game uses a traffic light with red, yellow, and green LEDs, as well as separate "walk" and "don’t walk" indicators (red and green LEDs) and a button. When the button is pressed, the "don’t walk" light turns red. The "walk" indicator turns green once the traffic light goes through the yellow phase and then turns red. After a set period, the "walk" indicator starts flashing to signal the end of the crossing time, then switches to red. The traffic light then changes back to green.
+
+ 
+
+    Your own GPIO project (extra credit 10%) – Come up with your own project (this can be something completely different than the above ideas or an enhanced variation of any of the above project ideas). Your project must meet or exceed the academic rigors of the above projects. I require that at least 75% of the project must be written in ARM Assembly. You must use three of your own defined functions (library functions in C/C++ or wiring pi library functions do not count). You must utilize the breadboard for this project
+
+Submitting:
+
+Zip the following all code, makefiles, external functions, readme document, and the video into a single zip file. Then submit on canvas. There is NO LATE SUBMISSIONS! 
