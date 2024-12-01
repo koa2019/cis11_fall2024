@@ -6,7 +6,7 @@
 // final-6.c:
 // * I went back to version final-4 because switching the arrays to char instead of int created way too 
 //   many problems.
-// * Fixed the BUG when the user inputs their code. Before scanf was saving all 4 digits in index zero. I /
+// * Fixed the BUG when the user inputs their code. Before scanf was saving all 4 digits in index zero. I
 //   fixed it by adding a loop and then deferencing each index of the array inside of the loop.
 
 #include <stdio.h>
@@ -49,8 +49,8 @@ int main(){
     char endl[] = "\n";
     char outCode[] = "\nCode:  ";
     char outGuess[] = "\nGuess: ";
-    char outWrong[] = "Wrong Guess. \n";
-    char outRight[] = "Right Guess. \n";    
+    char outWrong[] = "Wrong Guess. GAME OVER. \n";
+    char outRight[] = "Right Guess! Congratulations You've Won! \n";    
     char outTy[] = "\nGood Bye";
 
     int size=4;    
