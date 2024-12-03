@@ -1,4 +1,6 @@
 @ HOW TO COMPILE AND RUN: g++ rand-3.s && ./a.out
+@ Danielle
+@ 12-02-2024 Lab 8 Problem 1: Fill array with random numbers
 .global main
 
 .align 4
