@@ -11,7 +11,7 @@
 //        Find the smallest element from the current position to the end of the list.
 //        Swap it with the current element to place it in its correct position.
 //  Move to the next element and repeat until all elements are sorted.
-void selSort(int a[],int size){
+void selSort(int arr[],int size){
     int i;
     int minIndx;
     int right;
@@ -24,18 +24,18 @@ void selSort(int a[],int size){
         // Find the minimum element in unsorted array
         minIndx=i;
         int j;
-        for(j=i+1;j<size;j++){  // if(adjacentRight<25)
-            if(a[minIndx]>a[j]){       // if(value of minIndx > value of adjacentRight)
+        for(j=i+1;j<size;j++){         // if(adjacentRight<25). Compare arr[i] to all indices right of it
+            if(arr[minIndx]>arr[j]){       // if(value of minIndx > value of adjacentRight)
                 minIndx=j;             // then reset minIndx index to current adjRight index
             }
         }
 
-        // Swap the found minimum element with the first
-        // element in the unsorted part
+        // Swap the found minimum element with 
+        // current index in the unsorted part
         // swap(a[i],a[minIndx]);
-        int temp=a[i];
-        a[i]=a[minIndx];
-        a[minIndx]=temp;
+        int temp=arr[i];
+        arr[i]=arr[minIndx];
+        arr[minIndx]=temp;
     }
 }
 
@@ -47,7 +47,7 @@ void swap(int &a,int &b){ // &a and &b arederef array indicies
 
 
 void printArr( int arr[], int size ){
-    printf("\n\n");
+
 	for( int i = 0; i < size; i++ ){
 		//printf( "arr[%d] = %d\n", i, arr[i] );
         printf("%d, ", arr[i]);
@@ -74,13 +74,16 @@ int main(){
 	}
 
     // Print random array
+    printf("\n\nRandom Array:\n");
 	printArr( numArr, size);
 
     // Sort
     selSort(numArr,size);
     
     // Print sorted array
+    printf("\nSorted Array:\n");
     printArr( numArr, size);
-
+    printf("\n");
+    
 	return 0;
 }
