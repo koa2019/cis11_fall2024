@@ -49,16 +49,13 @@ forLoop:				@ for(i < 25)
 	@ mov r1, r9
 	@ b printf
 
-	@mov r9, r6			@ r9=r6=i
-
-	@ GET ADDRESS OF NEXT INDEX??
-	@add r4, r4, r6, lsl #2 	@ r4 = arr + (i*2^2)
+	@mov r9, r6			@ r9=r6=i. Sets array with 0-24 values
 
 	@ store a value into the array address	
 	str r9, [r4]		@ arr[i] = i; @ str source, [destination]
 	
 	@ GET ADDRESS OF NEXT INDEX??
-	 add r4, r4, r6, lsl #2 	@ r4 = arr + (i*2^2)
+	add r4, r4, r6, lsl #2 	@ r4 = arr + (i*2^2)
 
 	@ Increment i loop
 	add r6, #1			@  i++
@@ -85,11 +82,6 @@ getRandNum:
 	bl rand  	     @ calls the rand function
 	and r0, r0, #0xff  @ filters out the numbers to reasonable size without it you can get a 32bit number
 
-	@ @ Print random Number
-	@ mov r1, r0
-	@ ldr r0, =derefRand
-	@ bl printf
-
 	pop {pc}
 
 
@@ -98,23 +90,23 @@ printArr: 				@ void printArr( int arr[], int size ){
 @ r0 = array address
 @ r1 = size
 
-	push {r4,lr}
-	mov r4, #0			@ i = 0
-forLoop2:				@ for( int i = 0; i < size; i++ ){
-	cmp r4, r1			@ i < size
-	bge forLoop2End
+	push {r4-r6, lr}		@ protect these registers from this function changing its value
+	mov r4, r0			@ r4=arr address
+	mov r5, #0			@ i=0
+	mov r6, r1			@ r6=size
+forLoop2:				@ for( i < size ){
+	cmp r5, r6			@ (i-size==set flags)
+	bge forLoop2End		@ if(i >= size), then end loop
 	
-	push {r0-r3}
-	ldr r2, [r0]		@ loads arr[i]
-	mov r1, r4			@ copies my i
-	ldr r0, =outStr		@ str loaded
+	ldr r0, =outStr		@ load deref string
+	mov r1, r5			@ r1=r5=i
+	mov r2, r4			@ r2=arr address
+	ldr r2, [r2]		@ loads r2 with value of arr[i]
 	bl printf 			@ printf( "a[%d] = %d\n", i, arr[i] );
-	pop {r0-r3}
 
-
-	add r0, r4, lsl #2	@ next address in the array r0=r0+(r4*4)
-	add r4, #1			@ i++
+	add r4, r5, lsl #2	@ next address in the array r4=r4+(r5*4)
+	add r5, #1			@ i++
 	bal forLoop2
 forLoop2End:			@ }
-	pop {r4,pc} 		@ return;
+	pop {r4-r6, pc} 	@ return;
 @ }

@@ -41,24 +41,16 @@ forLoop:				@ for(i < 25)
 
 	@@-------- GET RANDOM NUMBER SEED --------@@
 
-	 bl getRandNum	 @ returns r0=randNum
-	 mov r9, r0	     @ r9=random number
+	bl getRandNum	 @ returns r0=randNum
+	mov r9, r0	     @ r9=random number
 
-	@ @ Print random Number
-	@ ldr r0, =derefRand
-	@ mov r1, r9
-	@ b printf
-
-	@mov r9, r6			@ r9=r6=i
-
-	@ GET ADDRESS OF NEXT INDEX??
-	@add r4, r4, r6, lsl #2 	@ r4 = arr + (i*2^2)
+	@mov r9, r6				@ r9=r6=i. Sets array with 0-24 values
 
 	@ store a value into the array address	
 	str r9, [r4]		@ arr[i] = i; @ str source, [destination]
 	
-	@ GET ADDRESS OF NEXT INDEX??
-	 add r4, r4, r6, lsl #2 	@ r4 = arr + (i*2^2)
+	@ GETS ADDRESS OF NEXT INDEX??
+	add r4, r4, r6, lsl #2 	@ r4 = arr + (i*2^2)
 
 	@ Increment i loop
 	add r6, #1			@  i++
@@ -84,11 +76,6 @@ getRandNum:
 
 	bl rand  	     @ calls the rand function
 	and r0, r0, #0xff  @ filters out the numbers to reasonable size without it you can get a 32bit number
-
-	@ @ Print random Number
-	@ mov r1, r0
-	@ ldr r0, =derefRand
-	@ bl printf
 
 	pop {pc}
 
