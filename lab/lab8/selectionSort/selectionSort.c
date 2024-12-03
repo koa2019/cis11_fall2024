@@ -4,23 +4,42 @@
 #include <cstdlib> // rand()
 #include <ctime>   // time()
 
+// Selection Sort
+// Start with the entire list as unsorted.
+// Start traversing the list from the first element.
+//  For each element:
+//        Find the smallest element from the current position to the end of the list.
+//        Swap it with the current element to place it in its correct position.
+//  Move to the next element and repeat until all elements are sorted.
+void selSort(int a[],int size){
+    int i;
+    int minIndx;
+    int right;
 
-void selSort(int a[],int n){
-    for(int i=0;i<n-1;i++){
-        int indx=i;
-        for(int j=i+1;j<n;j++){
-            if(a[indx]>a[j]){
-                indx=j;
+
+    // Start with the whole array as unsored.
+    // one by one move boundary of unsorted subarray towards right
+    for(i=0;i<size-1;i++){  // if(i<25-1)
+
+        // Find the minimum element in unsorted array
+        minIndx=i;
+        int j;
+        for(j=i+1;j<size;j++){  // if(adjacentRight<25)
+            if(a[minIndx]>a[j]){       // if(value of minIndx > value of adjacentRight)
+                minIndx=j;             // then reset minIndx index to current adjRight index
             }
         }
-        //swap1(a[i],a[indx]);
+
+        // Swap the found minimum element with the first
+        // element in the unsorted part
+        // swap(a[i],a[minIndx]);
         int temp=a[i];
-        a[i]=a[indx];
-        a[indx]=temp;
+        a[i]=a[minIndx];
+        a[minIndx]=temp;
     }
 }
 
-void swap1(int &a,int &b){ // &a and &b arederef array indicies
+void swap(int &a,int &b){ // &a and &b arederef array indicies
     int temp=a;
     a=b;
     b=temp;
@@ -33,7 +52,7 @@ void printArr( int arr[], int size ){
 		//printf( "arr[%d] = %d\n", i, arr[i] );
         printf("%d, ", arr[i]);
 	}
-    printf("\n\n");
+    printf("\n");
 	return;
 }
 
