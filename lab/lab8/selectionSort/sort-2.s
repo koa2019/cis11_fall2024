@@ -1,4 +1,4 @@
-@ HOW TO COMPILE AND RUN: g++ sort-1.s && ./a.out
+@ HOW TO COMPILE AND RUN: g++ sort-2.s && ./a.out
 @ Danielle
 @ 12-02-2024 Lab 8 Problem 2: Selection sort on random array of numbers
 .global main
@@ -28,6 +28,8 @@ main: 					@ int main(){
 	bl srand  	     	@ sets the seed for the puesdo random number generator
 		
 	@@-------- RESET ARRAY VALUES W/RANDOM NUMBER--------@@
+	ldr r0, =array		@ load array before i loop
+	mov r1, #25			@ r5=size=25
 	bl setRandArr
 
 
@@ -52,29 +54,30 @@ main: 					@ int main(){
 
 @@-------- RESET ARRAY VALUES W/RANDOM NUMBER--------@@
 
- setRandArr:			@ setRandArr()
- 	push {lr}
-	ldr r4, =array		@ load array before i loop
-	mov r5, #25			@ r5=size=25
+setRandArr:			@ setRandArr(int arr[], int size)
+ 	push {r4-r6, lr}
+	mov r4, r0		@ load array before i loop
+	mov r5, r1			@ r5=size=25
 	mov r6, #0 			@ r6 = i = 0
-forLoop:				@ for(i < 25)
-	
-	cmp r6, r5			@ (i-25)==? Set flags
-	bge forLoopEnd		@ if(i >= 25) then end loop
 
-	bl getRandNum	 	@ Call randNum() and returns r0=randNum
-	mov r9, r0	     	@ r9=random number
-
-	@ store a value into the array address	
-	str r9, [r4]		@ arr[i] = i; @ str source, [destination]
+	forLoop:				@ for(i < 25)
 		
-	@ Increment i and array address
-	add r4, r4, r6, lsl #2 @ GET ADDRESS OF NEXT INDEX?? @ r4 = arr + (i*2^2)
-	add r6, #1			   @ i++
-	bal forLoop			   @ keep looping
+		cmp r6, r5			@ (i-25)==? Set flags
+		bge forLoopEnd		@ if(i >= 25) then end loop
 
-forLoopEnd:   			
-	pop {pc}
+		bl getRandNum	 	@ Call randNum() and returns r0=randNum
+		mov r9, r0	     	@ r9=random number
+
+		@ store a value into the array address	
+		str r9, [r4]		@ arr[i] = i; @ str source, [destination]
+			
+		@ Increment i and array address
+		add r4, r4, r6, lsl #2 @ GET ADDRESS OF NEXT INDEX?? @ r4 = arr + (i*2^2)
+		add r6, #1			   @ i++
+		bal forLoop			   @ keep looping
+
+	forLoopEnd:   			
+	pop {r4-r6, pc}
 
 
 @@ -------------------- Get and return a random number -------------------- @@
