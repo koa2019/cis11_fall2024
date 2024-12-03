@@ -1,3 +1,4 @@
+@ g++ rand-1.s && ./a.out
 .global main
 
 .section .rodata

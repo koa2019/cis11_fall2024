@@ -53,7 +53,6 @@ void printArr( int arr[], int size ){
         printf("%d, ", arr[i]);
 	}
     printf("\n");
-	return;
 }
 
 int main(){
