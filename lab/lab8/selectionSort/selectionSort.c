@@ -30,8 +30,7 @@ void selSort(int arr[],int size){
             }
         }
 
-        // Swap the found minimum element with 
-        // current index in the unsorted part
+        // Swap the found minimum element with current index in the unsorted part
         // swap(a[i],a[minIndx]);
         int temp=arr[i];
         arr[i]=arr[minIndx];
