@@ -1,0 +1,4 @@
+1. printing wrong predefined numbers
+
+2. RISHER array1.s outputArr: func 
+    Why did he push/pop {r0-r3} ?

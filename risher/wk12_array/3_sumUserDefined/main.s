@@ -13,6 +13,7 @@ array: .skip 20  @int a[5]. Each element is 4 bytes, 5 elements so i need 20 spa
 main: 					@ int main(){
 	str lr, [sp, #-4]!  //push {lr}
 
+	@ Load array address and array's 1st index: array[0]
 	ldr r4, =array
 	ldr r5, =len
 	ldr r5, [r5]

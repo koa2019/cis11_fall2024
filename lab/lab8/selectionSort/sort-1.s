@@ -177,6 +177,7 @@ selectSort:
 			str r9, [r4, r6, lsl #2]		@ r9  = arr[minIndx] = arr[i];  
 			str r11, [r4, r7, lsl #2] 		@ r10 = arr[i] = arr[minIndx];
 
+			@ PRINT swapped array values
 			@ ldr r0, =outSwap2	
 			@ mov r1, r7			@ r1=minIndx
 			@ mov r2, r9			@ r2=arr address

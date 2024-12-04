@@ -17,9 +17,10 @@ main:
 	sub r1, r1, #1		@ stop--
 	mov r2, #0 			@ start value
 
-	bl reverseArray		@ Call reverseArray(arr,end,start)
+	bl reverseArray		@ Call reverseArray(arr,end,start) 
+						@ returns r0=array and r1=size
 
-	@ reverseArray() returns an array and arraySize
+	@ reverseArray() returns array and arraySize
 	ldr r0, =numbers
 	ldr r1, =size
 	ldr r1, [r1]
@@ -81,9 +82,9 @@ paLoop:
 	bge paEnd
 
 	ldr r0, =out
-	add r1, r4, r6, lsl #2 @  numbers[baseAddress + i * 4]
-	ldr r1, [r1] @ get the value not address
-	bl printf @ print it
+	add r1, r4, r6, lsl #2 	@  numbers[baseAddress + i * 4]
+	ldr r1, [r1] 			@ get the value not address
+	bl printf 				@ print it
 	
 	add r6, #1
 	b paLoop
