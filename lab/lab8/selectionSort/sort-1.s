@@ -96,10 +96,10 @@ selectSort:
 
 		mov r7, r6				@ minIndx=i; // Find the minimum element in unsorted array
 
-				@ PRINT minIndx
-				ldr r0, =outMin	@ load deref string
-				mov r1, r7			@ r1=minIndx
-				bl printf
+				@ @ DEBUGGING...  PRINT minIndx
+				@ ldr r0, =outMin	@ load deref string
+				@ mov r1, r7			@ r1=minIndx
+				@ bl printf
 
 		// Find the minimum element in unsorted array
 		// Compare arr[i] to all indices right of it
@@ -110,7 +110,7 @@ selectSort:
 			cmp r8, #25				@ (j-25)==set flags
 			bge endInnerjLoop		@ if(j>=25) then end j loop
 
-					@ @ PRINT j
+					@ @ DEBUGGING... PRINT j
 					@ ldr r0, =outJ	@ load deref string
 					@ mov r1, r8		@ r2=j
 					@ bl printf
@@ -144,10 +144,10 @@ selectSort:
 			@ else reset minIndx index to current j index
 			mov r7, r8						@ minIndx=j; 
 				
-					@ PRINT minIndx
-					ldr r0, =outResetMin	@ load deref string
-					mov r1, r7			@ r1=minIndx
-					bl printf
+					@ @ DEBUGGING... PRINT minIndx
+					@ ldr r0, =outResetMin	@ load deref string
+					@ mov r1, r7			@ r1=minIndx
+					@ bl printf
 
 			dontResetMinIndx:		
 			add r8, #1			   @ j++
@@ -191,7 +191,7 @@ selectSort:
 			@ bl printf 			@ printf( "a[%d] = %d\n", i, arr[i] );
 
 		@ Increment inner loop: i and arr[i] address to next
-		add r4, r4, r6, lsl #2 @ r4 = arr + (i*2^2)
+		@ add r4, r4, r6, lsl #2 @ r4 = arr + (i*2^2)
 		add r6, #1			   @ i++
 		bal outteriLoop		   @ keep i looping
 
@@ -227,7 +227,9 @@ setRandArr:			@ setRandArr(int arr[], int size)
 		str r9, [r4]		@ arr[i] = i; @ str source, [destination]
 			
 		@ Increment i and array address to next
-		add r4, r4, r6, lsl #2 @ r4 = arr + (i*2^2)
+		@ add r4, r4, r6, lsl #2 @ r4 = arr + (i*2^2)
+		add r4, #4			   @ increment array address
+
 		add r6, #1			   @ i++
 		bal forLoop			   @ keep looping
 
@@ -263,7 +265,8 @@ printLoop:				@ for( i < size ){
 	ldr r1, [r1]		@ arr[i]
 	bl printf 			@ printf(" %d,", arr[i])
 
-	add r4, r5, lsl #2	@ next address in the array r4=r4+(r5*4)
+	@ add r4, r5, lsl #2	@ next address in the array r4=r4+(r5*4)
+	add r4, #4			@ increment array's address to next index
 	add r5, #1			@ i++
 	bal printLoop
 printLoopEnd:			@ }
