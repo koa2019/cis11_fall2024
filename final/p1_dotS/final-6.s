@@ -29,6 +29,8 @@ outEq: .asciz " %d==%d\n"
 outNotEq:  .asciz " %d != ?\n"
 outVerifyMsg: .asciz "\n\n\tVerifying your code...\n"
 
+@ DEBUGGING OUTS
+outisPwrd: .asciz "\n\tisPassword: %d\n"
 outiLast: .asciz "\ti = %d  AND last = %d\n"
 r10_out: .asciz "\tr10 = %d\n"
 
@@ -83,19 +85,20 @@ main:                   @ int main(){
         @ DEBUGGING
         @mov r0, #1              @ guess is correct
         @mov r0, #0              @ guess is wrong
+        mov r1, r0
+        ldr r0, =outisPwrd
+        bl printf
 
         cmp r0, #1              @ (r0-1==Set Zero flag) {
-        beq isPassword          @ (1-1==0) ? Z==1
-        bmi notPassword         @ (0-1!=0) ? Z==0
+        bne notPassword         @ (0-1==-1) ? Z==0 FALSE
         
         isPassword:             @ isPassword==1 true
             ldr r0, =outRight   
             bl printf           @ printf(outRight);
             
-            ldr r0, =numTrys
-            ldr r0, [r0]
-            mov r4, r0          @ i=numTrys; if correct, then stop user from guessing
-            b incrILoop
+            @ if correct, then stop user from guessing
+            mov r4, r5          @ r4=i=numTrys
+            b endForLoop
             
         notPassword:            @ isPassword==0 false
             ldr r0, =guess      
@@ -172,6 +175,7 @@ checkPassword:            @ Check if user's guess is correct
         @ Print counter and then array comparison results
         ldr r0, =outI
         mov r1, r8      @ r8=i
+        ldr r1, [r1]
         bl printf       @ printf(outI, i);
 
             isWrong:                @ guess[i] does NOT equal code[i]
@@ -200,7 +204,6 @@ checkPassword:            @ Check if user's guess is correct
     @ ldr r0, =r10_out
     @ mov r1, r10
     @ bl printf
-
 
     cmp r8, r11              @ ( i - last ) == Set Zero Flag
     bne nextIndx             @ ( i-3 != 0  ) Z==0
