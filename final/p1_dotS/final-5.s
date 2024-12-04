@@ -269,10 +269,12 @@ printArr: 				@ void printArr( int arr, int size ){
         bge printLoopEnd	    @ if(i >= size), then end loop
 
         ldr r0, =deref	        @ load deref string
-        add r1, r4, r6, lsl #2	@ load arr address arr[arr+(i*2^2bytes)]
+        @ add r1, r4, r6, lsl #2	@ load arr address arr[arr+(i*2^2bytes)]
+        mov r1, r4
         ldr r1, [r1]		    @ arr[i]
         bl printf 			    @ printf(" %d", arr[i])
 
+        add r4, #4              @ incremnt array address to next index
         add r6, #1			    @ i++
         b printLoop
     printLoopEnd:		
