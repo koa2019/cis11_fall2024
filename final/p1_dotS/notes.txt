@@ -1,7 +1,16 @@
-1. printing wrong predefined numbers
+* checkPassword() is broken. 
+    - returns r0=true no matter what
+    USE test inputs:
+        6612 returns correct
+        6675 returns wrong and num attempts skips from 1 to 3
+    - isRight and isWrong labels are breaking it when they print
 
-2. RISHER array1.s outputArr: func 
+
+* final-1 printArr() is printing predefined numbers wrong
+--> based it off of Risher's array1.s outputArr: func 
     Why did he push/pop {r0-r3} ?
 
-3. You can change setGuess to have no paramters and access variables size & guess[] directly inside of the function because it stores it.
-    See risher's wk12>sumUserDefined
+* You can change setGuess() to have no paramters and access variables 
+   size & guess[] directly inside of the function because it stores it.
+--> See risher's wk12>sumUserDefined
+

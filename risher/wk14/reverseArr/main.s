@@ -12,7 +12,7 @@ main:
 
 	@ load 3 arguments for reverseArray(arr,end,start)
 	ldr r0, =numbers	@ int numbers[]
-	ldr r1, =size		@ int stop
+	ldr r1, =size		@ int stop=size
 	ldr r1, [r1] 		@ stop = size - 1
 	sub r1, r1, #1		@ stop--
 	mov r2, #0 			@ start value
@@ -30,13 +30,11 @@ main:
 	pop {pc}
 
 
-
-/**
-r0=numbers,
-r1=end=5,
-r2=start=0
-**/
 reverseArray:		@ reverseArray(arr,end,start)
+@ r0=numbers,
+@ r1=end=5,
+@ r2=start=0
+
 	push {r4,lr}
 	raLoop:
 		cmp r2, r1  @ while( start < end ){
@@ -48,10 +46,10 @@ reverseArray:		@ reverseArray(arr,end,start)
 		@ IS [ ] CALCULATING THE ADDRESS OF ARR[START]??
 		@ r0 base add numbers(arr) + ( r2 * 4 )
 
-		@ right = [numbers + (start * 2^2)]
-		ldr r3,  [r0, r2, lsl #2] @ int temp = arr[start]; @ reads the left side and stores it into temp
+		@ arr[right] = [numbers + (start * 2^2)]
+		ldr r3, [r0, r2, lsl #2] @ int temp = arr[start]; @ reads the left side and stores it into temp
 		
-		@ left = [numbers + (end * 2^2)]
+		@ arr[left] = [numbers + (end * 2^2)]
 		ldr r4, [r0, r1, lsl #2] @ get the value at the right end of the array by taking the base address of numbers
 								 @ adding end(r1) * 4 to get the correct offset in memory
 

@@ -1,11 +1,11 @@
 @ Danielle
 @ cis 11 Final Problem 1: Master Mind
 @ 12-03-2024
-@ Compile & run in terminal: g++ final-3.s && ./a.out
+@ Compile & run in terminal:            g++ final-4.s && ./a.out
 @
 @ Version Notes:
-@ Edited isPassword/notPassword conditionals that print whether or not the user's guess 
-@ is correct. I had to manually set cmp register because checkPassword() isn't working.
+@ checkPassword() is commented out. 
+@ isPassword and notPassword work correctly when you comment line 80 or 81.
 .global main
 
 .align 4
@@ -25,24 +25,25 @@ results: .asciz "\n--- Results ---\n"
 outTy: .asciz "\nGAME OVER. Good Bye\n\n"
 outI: .asciz "[%d]: "
 outEq: .asciz " %d==%d\n"
-outNotE:  .asciz " %d!=?\n"
+outNotEq:  .asciz " %d != ?\n"
 outVerifyMsg: .asciz "\n\n\tVerifying your code...\n"
+
+outiLast: .asciz "\ti = %d  AND last = %d\n"
+r10_out: .asciz "\tr10 = %d\n"
 
 .align 4
 .section .data
 size: .word 4          @ int size=4
-numTrys: .word 1  
+numTrys: .word 2  
 code: .word 6, 6, 1, 5
-guess: .word 6, 2, 1, 4
-isTrue: .word 0   @ false=0
-last: .word size-1   @ size-1
+guess: .word 6, 6, 1, 4
 
 .text
 main:                   @ int main(){
     push {lr}           @ push link register r14 to top of stack
 
     @ Output code and guess arrays
-    @bl output2Arrays  
+    bl output2Arrays  
 
     ldr r0, =outInstruct   
     bl printf          
@@ -53,7 +54,7 @@ main:                   @ int main(){
     ldr r5, [r5]
     for:                @ for(int i=1; i<=numTrys; i++){
         cmp r4, r5      @ ( i-numTrys ) ? Set Register Flags
-        bgt endForLoop
+        bgt endForLoop  @ ( i > numTrys )
 
         @ Output number of attempts to guess code
         ldr r0, =outTry
@@ -70,6 +71,11 @@ main:                   @ int main(){
         ldr r0, =outVerifyMsg
         bl printf               @ printf(outVerifyMsg);
    
+        @ load function parameters
+        ldr r0, =code           @ code[]
+        ldr r1, =guess          @ guess[]
+        ldr r2, =size
+        ldr r2, [r2]
         @bl checkPassword        @ int isPassword = checkPassword(code,guess,size);
         mov r0, #1              @ guess is correct
         @mov r0, #0              @ guess is wrong
@@ -109,80 +115,107 @@ main:                   @ int main(){
     pop {pc}                    @ return to where i was. Pop whatever on top of stack into program counter r15
 
 
-@@ --------------------------------------------------- @@
-@@ -------------------- FUNCTIONS -------------------- @@
-@@ --------------------------------------------------- @@
+    @@ --------------------------------------------------- @@
+    @@ -------------------- FUNCTIONS -------------------- @@
+    @@ --------------------------------------------------- @@
 
-@@ -------------------- setGuess(guess,size) -------------------- @@
 
-// Check if user's guess is correct
-checkPassword:          @ int checkPassword(int *code, int *guess, const int size){
 
-    push {r4-r9, lr}    @ protect these registers from this function from altering them
-    @ ldr r4, =code
-    @ ldr r5, =guess
-    @ ldr r6, size
-    @ ldr r6, [r6]
-    @ mov r7, #0          @ i=0;
-    @ pssWrdLoop:         @ for(i=0;i<size;i++){
+@@ ---------------- int checkPassword code[],guess[],size) ---------------- @@
+
+
+checkPassword:            @ Check if user's guess is correct          
+@ r4 = r0 = code address
+@ r5 = code[i]
+@ r6 = r1 = guess address
+@ r7 = guess[i]
+@ r8 = i = 0
+@ r9 = r2 = size
+@ r10 = return isTrue;
+@ r11 = (size-1)
+
+    push {r4, lr}         @ protect these registers from this function from altering them
+    mov r4, r0            @ r4=code[]   
+    mov r6, r1            @ r5=guess[]
+    mov r8, #0            @ r8=i=0;
+    mov r9, r2            @ r9=size
+    mov r10, #0           @ return isTrue=false
+    mov r11, r2           @ r11=size
+    sub r11, #1           @ r11=size-1
+    pWLoop:               @ for(i=0;i<size;i++){
         
-    @                     @ Print counter and then array comparison results
-    @     ldr r0, =outI
-    @     ldr r1, r7      @ r7=i
-    @     bl printf       @ printf(outI, i);
+        cmp r8, r9        @ (i-size)
+        bge endPWLoop
 
+        @@ ----------- Load code[i] ----------- @@
 
-    @     @@ ----------- Load code[i] ----------- @@
+        @ ldr r4, [r4, r8, lsl #2]
+        add r4, r4, r8, lsl #2	@ r4 = array address -> code[code+(i*2^2bytes)]
+        ldr r5, [r4]		    @ r5 = code[i]
 
-    @     add r8, r4, r7, lsl #2	@ r1 = array address -> arr[arr+(i*2^2bytes)]
-    @     ldr r8, [r8]		    @ r8 = code[i]
+        @@ ----------- Load guess[i] ----------- @@
 
-    @     @@ ----------- Load guess[i] ----------- @@
+        @ldr r6, [r6, r8, lsl #2]
+        add r6, r6, r8, lsl #2	@ r5 = array address -> guess[guess+(i*2^2bytes)]
+        ldr r7, [r6]		    @ r7 = guess[i]
 
-    @     add r9, r5, r7, lsl #2	@ r1 = array address -> arr[arr+(i*2^2bytes)]
-    @     ldr r9, [r9]		    @ r9 = guess[i]
-
-    @     cmp r4, r5              @ code[i]-guess[i]==Set Zero Flag
-    @     @ {
-    @     bne isWrong             @ ( code[i] != guess[i] ) ? Zero Flag==0 False
-    @     beq isRight             @ ( code[i] == guess[i] ) ? Zero Flag==1 True
+        @ cmp r5, r7              @ ( code[i] - guess[i] == Set Zero Flag)
+        @ bne isWrong             @ if ( code[i] != guess[i] ) ? Z==0 False
+        @ beq isRight             @ if ( code[i] == guess[i] ) ? Z==1 True
         
-    @     isWrong:                @ if guess[i] does NOT equal code[i]
-    @         ldr r0, =outNotEq   @ printf(outNotEq,guess[i]);
-    @         b endLoop           @ goto endLoop;
-    @     isRight:                @ } else {
-    @         ldr r0, =outEq
-    @         mov r1, r8          @ r8 = code[i]
-    @         ldr r1, [r1]
-    @         mov r2, r9          @ r9 = guess[i]
-    @         ldr r2, [r2]
-    @         bl printf @ printf( outEq, code[i], guess[i] );
-    @     @ }
+        @ @ Print counter and then array comparison results
+        @ ldr r0, =outI
+        @ mov r1, r8      @ r8=i
+        @ bl printf       @ printf(outI, i);
 
+            @ isWrong:                @ guess[i] does NOT equal code[i]
+            @     ldr r0, =outNotEq   
+            @     mov r1, r7          @ r7 = guess[i]
+            @     bl printf           @ printf(outNotEq,guess[i]);           
+            @     b endPWLoop         @ goto endPWLoop
 
-    @ @    @@ ----------- if i==(size-1) AND array indices are eqaul than set return variable  ----------- @@
+            @ isRight:                @ guess[i] equals code[i]
+            @     ldr r0, =outEq
+            @     mov r1, r5          @ r5 = code[i]
+            @     @ldr r1, [r1]
+            @     mov r2, r7          @ r7 = guess[i]
+            @     @ldr r2, [r2]
+            @     bl printf @ printf( outEq, code[i], guess[i] );
+            @     b nextIndx
 
-    @ @                             @ Load code[last] 
-    @ @     add r0, r4, r7, lsl #4	@ r0 = array address -> arr[ arr + ( 4 * 2^2 bytes)]
-    @ @     ldr r0, [r0]		    @ r8 = code[i]
-
-    @ @                             @ Load guess[last] 
-    @ @     add r1, r5, r7, lsl #4	@ r1 = array address -> arr[ arr + ( 4 * 2^2 bytes)]
-    @ @     ldr r1, [r1]		    @ r9 = guess[i]
-
-    @ @     cmp r0, r1              @ ( code[last] - guess[last] ) == Set Zero Flag
-    @ @     beq isEqLastIndx        @ ( code[last] == guess[last]) ? Z==1 True :
-    @ @     bne notEqLastIndx       @ ( code[last] != guess[last]) ? Z==0 Flase
-
-    @ @     isEqLastIndx:           @ set return value to true
-    @ @         mov r0, #1          @ isTrue=1;   // 1=true          
-    @ @         b endLoop
-    @     @ notEqLastIndx:          @ set return value to false
-    @         mov r0, #0          @ isTrue=0    // 0=false
+    @@ -----------  if(i == last index)  ----------- @@
         
-    endLoop:
-    pop {r4-r9, pc}             @ return r0=isTrue;
+    ldr r0, =outiLast
+    mov r1, r8
+    mov r2, r11
+    bl printf
+    ldr r0, =r10_out
+    mov r1, r10
+    bl printf
+
+    cmp r8, r11              @ ( i - last ) == Set Zero Flag
+    bne nextIndx             @ ( i-3 != 0  ) Z==0
+ 
+
+        @@ -----------  if(code[last] == guess[last]){  ----------- @@
+        cmp r5, r7          @ ( code[last] - guess[last] ) == Set Flags
+        bne nextIndx        @ ( code[last] != guess[last]) ? Z==0 False :
+               
+        @ if(code[last] == guess[last])        
+        mov r10, #1          @ set return value to true       
+        bal endPWLoop             
+
+    nextIndx:    
+    add r8, #1          @ i++
+    bal pWLoop
+
+
+
+    endPWLoop:
+    mov r10, r0          @ set return register r0=isTrue
+    pop {r4, pc}             @ return r0 = bool isTrue;
 @ }
+
 
 
 @@ -------------------- setGuess(guess[],size) -------------------- @@

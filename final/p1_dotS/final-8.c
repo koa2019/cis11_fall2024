@@ -25,19 +25,21 @@ int checkPassword(int *code, int *guess, const int size){
     char outNotEq[] = " %d!=?\n";
     int isTrue=0;   //false=0
     int last=size-1;
-
-    printf("\n\n\tVerifying your code...\n");
+   
     int i=0;
     for(i=0;i<size;i++){
         
         printf(outI,i);
 
+        // check indicies 0 to 2
         if(code[i]!=guess[i]){
             printf(outNotEq,guess[i]);
             goto endLoop;
-        } else {
+        } else {    // code[i] == guess[i]
             printf(outEq,guess[i],code[i]);
         }
+
+        // After check all previous index, check last element
         if(code[last]==guess[last]){
             isTrue=1;   //true=1          
         }
@@ -107,6 +109,8 @@ int main(){
         
 
         // Check user's guess to the code
+        printf("\n\n\tVerifying your code...\n");
+
         int isPassword = checkPassword(code,guess,size);
 
         if(isPassword==1){
