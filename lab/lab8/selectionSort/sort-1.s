@@ -104,7 +104,7 @@ selectSort:
 		// Find the minimum element in unsorted array
 		// Compare arr[i] to all indices right of it
 
-		mov r8, r6				@ r8=j=i
+		mov r8, r6					@ r8=j=i
 		add r8, #1					@ r8 = j+1
 		innerjLoop: 				@ for(j=i+1;j<size;j++){
 			cmp r8, #25				@ (j-25)==set flags
@@ -129,7 +129,7 @@ selectSort:
 			// load arr[minIndx]
 			@ add r0, r4, r7, lsl #2	// r9 = arr +(minIndx*2^2)
 			@ ldr r9, [r0]			// r10 = arr[minIndx]
-			ldr r9,  [r4, r7, lsl #2]		@ r9  = arr[minIndx] 
+			ldr r9, [r4, r7, lsl #2]		@ r9  = arr[minIndx] 
 
 			// load arr[j]
 			@ add r1, r4, r8, lsl #2	// baseAdr + ((j)*4). address of arr[j]
