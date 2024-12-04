@@ -92,7 +92,7 @@ main:                   @ int main(){
         cmp r0, #1              @ (r0-1==Set Zero flag) {
         bne notPassword         @ (0-1==-1) ? Z==0 FALSE
         
-        isPassword:             @ isPassword==1 true
+            @ if(isPassword==1 true)
             ldr r0, =outRight   
             bl printf           @ printf(outRight);
             
@@ -100,18 +100,17 @@ main:                   @ int main(){
             mov r4, r5          @ r4=i=numTrys
             b endForLoop
             
-        notPassword:            @ isPassword==0 false
-            ldr r0, =guess      
-            ldr r1, =size
-            ldr r1, [r1]        
-            bl printArr         @ printArr(guess,size)
-            ldr r0, =outWrong    
-            bl printf           @ printf(outWrong)
-                       
-                
-    incrILoop:
-    add r4, #1                  @ i++
-    bal for
+            notPassword:            @ isPassword==0 false
+                ldr r0, =guess      
+                ldr r1, =size
+                ldr r1, [r1]        
+                bl printArr         @ printArr(guess,size)
+                ldr r0, =outWrong    
+                bl printf           @ printf(outWrong)                       
+
+        incrILoop:
+        add r4, #1                  @ i++
+        bal for
 
     endForLoop:  
     bl output2Arrays            @ Output code and guess arrays
@@ -155,28 +154,25 @@ checkPassword:            @ Check if user's guess is correct
         bge endPWLoop
 
         @@ ----------- Load code[i] ----------- @@
-
         ldr r5, [r4, r8, lsl #2]
         @ add r4, r4, r8, lsl #2	@ r4 = array address -> code[code+(i*2^2bytes)]
         @ ldr r5, [r4]		    @ r5 = code[i]
 
-
         @@ ----------- Load guess[i] ----------- @@
-
         ldr r7, [r6, r8, lsl #2]
-        @ add r6, r6, r8, lsl #2	@ r5 = array address -> guess[guess+(i*2^2bytes)]
-        @ ldr r7, [r6]		    @ r7 = guess[i]
 
+
+        @ Print counter and then array comparison results
+        ldr r0, =outI
+        mov r1, r8      @ r8=i
+        @ldr r1, [r1]
+        bl printf       @ printf(outI, i);
 
         cmp r5, r7              @ ( code[i] - guess[i] == Set Zero Flag)
         bne isWrong             @ if ( code[i] != guess[i] ) ? Z==0 False
         beq isRight             @ if ( code[i] == guess[i] ) ? Z==1 True
         
-        @ Print counter and then array comparison results
-        ldr r0, =outI
-        mov r1, r8      @ r8=i
-        ldr r1, [r1]
-        bl printf       @ printf(outI, i);
+
 
             isWrong:                @ guess[i] does NOT equal code[i]
                 ldr r0, =outNotEq   
@@ -187,56 +183,49 @@ checkPassword:            @ Check if user's guess is correct
             isRight:                @ guess[i] equals code[i]
                 ldr r0, =outEq
                 mov r1, r5          @ r5 = code[i]
-                @ldr r1, [r1]
                 mov r2, r7          @ r7 = guess[i]
-                @ldr r2, [r2]
                 bl printf @ printf( outEq, code[i], guess[i] );
-                b nextIndx
+                @ b nextIndx
 
 
     @@ -----------  if(i == last index)  ----------- @@
-        
-    @ DEBUGGING PRINTS
-    @ ldr r0, =outiLast
-    @ mov r1, r8
-    @ mov r2, r11
-    @ bl printf
-    @ ldr r0, =r10_out
-    @ mov r1, r10
-    @ bl printf
+
+    @@ DEBUGGING PRINTS
+    ldr r0, =outiLast
+    mov r1, r8
+    mov r2, r11
+    bl printf
 
     cmp r8, r11              @ ( i - last ) == Set Zero Flag
     bne nextIndx             @ ( i-3 != 0  ) Z==0
- 
+    beq checkLastIndx        @ 3-3==0 Z==1
+
+        checkLastIndx:        
+        ldr r5, [r4, r8, lsl #2]    @ Load code[i]        
+        ldr r7, [r6, r8, lsl #2]    @ Load guess[i] 
 
         @@ -----------  if(code[last] == guess[last]){  ----------- @@
-        cmp r5, r7          @ ( code[last] - guess[last] ) == Set Flags
-        bne nextIndx        @ ( code[last] != guess[last]) ? Z==0 False :
-               
-        @ if(code[last] == guess[last])        
-        mov r10, #1          @ set return value to true       
+        cmp r5, r7          @ ( code[last]  - guess[last] ) == Set Flags
+        bne nextIndx        @ ( code[last] != guess[last] ) ? Z==0 False :
+        beq setIsTrue       @ ( code[last] == guess[last] ) ? Z==1     
+        
+        setIsTrue:          @ if(code[last] == guess[last])        
+        mov r10, #1         @ set return isTrue=TRUE       
         bal endPWLoop             
 
     nextIndx:    
     add r8, #1          @ i++
     bal pWLoop
 
-
-
     endPWLoop:
     
     @ DEBUGGING PRINTS
-    @ ldr r0, =outiLast
-    @ mov r1, r8
-    @ mov r2, r11
-    @ bl printf
-    @ ldr r0, =r10_out
-    @ mov r1, r10
-    @ bl printf
+    ldr r0, =r10_out
+    mov r1, r10
+    bl printf
 
-    @ mov r10, r0          @ set return register r0=isTrue
-    mov r0, r10          @ set return register r0=isTrue
-    pop {r4, pc}             @ return r0 = bool isTrue;
+    mov r0, r10          @ r0=r10. Set return register r0=isTrue
+    pop {r4, pc}         @ return r0 = bool isTrue;
 @ }
 
 
