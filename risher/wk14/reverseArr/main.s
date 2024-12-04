@@ -48,10 +48,10 @@ reverseArray:		@ reverseArray(arr,end,start)
 		@ IS [ ] CALCULATING THE ADDRESS OF ARR[START]??
 		@ r0 base add numbers(arr) + ( r2 * 4 )
 
-		@ right= [numbers + (start * 2^2)]
+		@ right = [numbers + (start * 2^2)]
 		ldr r3,  [r0, r2, lsl #2] @ int temp = arr[start]; @ reads the left side and stores it into temp
 		
-		@ left= [numbers + (end * 2^2)]
+		@ left = [numbers + (end * 2^2)]
 		ldr r4, [r0, r1, lsl #2] @ get the value at the right end of the array by taking the base address of numbers
 								 @ adding end(r1) * 4 to get the correct offset in memory
 
@@ -82,7 +82,7 @@ paLoop:
 	bge paEnd
 
 	ldr r0, =out
-	add r1, r4, r6, lsl #2 	@  numbers[baseAddress + i * 4]
+	add r1, r4, r6, lsl #2 	@ numbers[baseAddress + i * 4]
 	ldr r1, [r1] 			@ get the value not address
 	bl printf 				@ print it
 	
