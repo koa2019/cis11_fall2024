@@ -2,3 +2,6 @@
 
 2. RISHER array1.s outputArr: func 
     Why did he push/pop {r0-r3} ?
+
+3. You can change setGuess to have no paramters and access variables size & guess[] directly inside of the function because it stores it.
+    See risher's wk12>sumUserDefined

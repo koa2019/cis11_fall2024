@@ -1,8 +1,9 @@
 @ Danielle
 @ cis 11 Final Problem 1: Master Mind
-@ compile & run in terminal: g++ final-2.s && ./a.out
+@ Compile & run in terminal: g++ final-3.s && ./a.out
+@
 @ Notes:
-@ Changed printArr() to make it simplier and fix the printing bug it had.
+@ Added isPassword() to make it simplier and fix the printing bug it had.
 .global main
 
 .align 4
@@ -57,16 +58,29 @@ main:                   @ int main(){
         bl setGuess     @ setGuess(guess,size)
 
         
-    @ Check user's guess to the code
-    @ int isPassword = checkPassword(code,guess,size);
-
-    @ if(isPassword==1){
-    @        printf(outRight);
-    @        i=numTrys;  // if correct, then stop user from guessing
-    @ } else {
-    @         printArr(guess,size)
-    @         printf(outWrong)            
-    @ }
+        @ Check user's guess against the secret code
+        bl checkPassword        @ int isPassword = checkPassword(code,guess,size);
+        
+        cmp r0, #1              @ (r0-1==Set Zero flag)
+        beq isPassword          @ (1-1==0) ? Z==1
+        bne notPassword         @ (0-1!=0) ? Z==0
+        
+        isPassword:             @ if(isPassword==1){
+            ldr r0, =outRight   
+            bl printf           @ printf(outRight);
+            
+            ldr r0, =numTrys
+            ldr r0, [r0]
+            mov r4, r0          @ i=numTrys; if correct, then stop user from guessing
+        
+        notPassword:            @ } else {
+            
+            ldr r0, =guess      
+            ldr r1, =size
+            ldr r1, [r1]        
+            bl printArr         @ printArr(guess,size)
+            ldr r0, =outWrong   @ printf(outWrong)            
+        @ }
     
     endForLoop:    
 
