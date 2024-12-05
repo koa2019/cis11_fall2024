@@ -1,0 +1,22 @@
+Lab 8 Revenge of the Arrays
+
+I would advise writing this in c/c++ first as it will help you to debug any issues with logic there. Please submit the arm programs in separate files with the following schema lab8probX.s in one zip file. Remember late submissions are only worth 50% at best.
+
+ 
+    Search an array
+    fill an array of size 25 with 25 numbers using rand. snippet on how to create random numbers below. Print out the array then let the user input a number to search for. If the number is found give the array index if it is not found output -1.
+
+
+    selection sort (extra Credit)
+    Fill an array of size 25 with 25 numbers using rand. snippet on how to create random numbers below. Print out the array then sort the array using selection sort (no credit will be given if used bubble sort)
+
+Random code snippet
+// Set the seed once at the top of main like you would in c++ 
+
+mov r0, #0
+bl time  //gets current time time(0)
+bl srand  //sets the seed for the puesdo random number generator
+
+
+bl rand  //calls the rand function
+and r0, r0, #99  //filters out the numbers to reasonable size without it you can get a 32bit number
