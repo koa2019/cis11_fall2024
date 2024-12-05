@@ -1,6 +1,7 @@
-* Ask risher about line 145
+* Need to change how the game prints out wrong guesses. It should print all 4 digits and then show which ones are right and wrong. 
+  As of now it will stop printing at the first occurence of a wrong digit guess.
 
-* final-7.s BUG after commenting setGuess() back in. numTrys=2 but after 2nd wrong guess it still 
+DONE * final-7.s BUG after commenting setGuess() back in. numTrys=2 but after 2nd wrong guess it still 
   loops to "Attempt #3"
   --> Test inputs: 1234, 4567, 6618, 6615
 
@@ -16,7 +17,4 @@ DONE * final-1 printArr() is printing predefined numbers wrong
         --> based it off of Risher's array1.s outputArr: func 
         --> --> Why did he push/pop {r0-r3} ?
 
-* You can change setGuess() to have no paramters and access variables 
-   size & guess[] directly inside of the function because it stores it.
-    --> See risher's wk12>sumUserDefined
 

@@ -1,13 +1,11 @@
 @ Danielle
 @ cis 11 Final Problem 1: Master Mind
-@ 12-04-2024
+@ 12-05-2024
 @ Compile & run in terminal:            g++ final-7.s && ./a.out
 @
 @ Version Notes:
-@ Cleaned this version up for submittal. Reference prior version for debugging.
-@ Fixed the logic bug in the for(i<numTrys) in main by protecting registers r4-r11 inside of checkPassword(). Updated push & pop to {r4-r11}
-
-… r4-r11 inside of checkPassword(). push & pop {r4-r11} 
+@ Need to change how the game prints out wrong guesses. It should print all 4 digits and then show which ones are right and wrong. As of now it will stop printing at the first occurence of a wrong digit guess.
+@ Check notes.txt
 
 .global main
 
