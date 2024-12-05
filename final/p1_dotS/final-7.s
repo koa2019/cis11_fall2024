@@ -127,7 +127,7 @@ checkPassword:            @ Check if user's guess is correct
     @ r10 = return isTrue;
     @ r11 = (size-1)
 
-    push {r4, lr}         @ protect these registers from this function from altering them
+    push {r4-r11, lr}         @ protect these registers from this function from altering them
                           @ Get variables ready before loop starts 
     mov r4, r0            @ r4=code[]   
     mov r6, r1            @ r5=guess[]
@@ -200,7 +200,7 @@ checkPassword:            @ Check if user's guess is correct
 
     endPWLoop:
     mov r0, r10          @ r0=r10. Set return register r0=isTrue
-    pop {r4, pc}         @ return r0 = bool isTrue;
+    pop {r4-r11, pc}         @ return r0 = bool isTrue;
 @ }
 
 
