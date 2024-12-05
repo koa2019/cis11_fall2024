@@ -1,4 +1,10 @@
-* checkPassword() is broken. 
+* Ask risher about line 145
+
+* final-7.s BUG after commenting setGuess() back in. numTrys=2 but after 2nd wrong guess it still 
+  loops to "Attempt #3"
+  --> Test inputs: 1234, 4567, 6618, 6615
+
+DONE * checkPassword() is broken. 
     - returns r0=true no matter what
     USE test inputs:
         6612 returns correct
@@ -6,11 +12,11 @@
     - isRight and isWrong labels are breaking it when they print
 
 
-* final-1 printArr() is printing predefined numbers wrong
---> based it off of Risher's array1.s outputArr: func 
-    Why did he push/pop {r0-r3} ?
+DONE * final-1 printArr() is printing predefined numbers wrong
+        --> based it off of Risher's array1.s outputArr: func 
+        --> --> Why did he push/pop {r0-r3} ?
 
 * You can change setGuess() to have no paramters and access variables 
    size & guess[] directly inside of the function because it stores it.
---> See risher's wk12>sumUserDefined
+    --> See risher's wk12>sumUserDefined
 
