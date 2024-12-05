@@ -81,15 +81,16 @@ main:                   @ int main(){
         ldr r2, =size
         ldr r2, [r2]
         bl checkPassword        @ int isPassword = checkPassword(code,guess,size);
-        
+        mov r4, r0              @ r4=r0=isTrue
+
         @ DEBUGGING
         @mov r0, #1              @ guess is correct
-        @mov r0, #0              @ guess is wrong
-        mov r1, r0
+        @mov r0, #0              @ guess is wrong        
         ldr r0, =outisPwrd
+        mov r1, r4
         bl printf
 
-        cmp r0, #1              @ (r0-1==Set Zero flag) {
+        cmp r4, #1              @ (r0-1==Set Zero flag) {
         bne notPassword         @ (0-1==-1) ? Z==0 FALSE
         
             @ if(isPassword==1 true)
@@ -190,11 +191,11 @@ checkPassword:            @ Check if user's guess is correct
 
     @@ -----------  if(i == last index)  ----------- @@
 
-    @@ DEBUGGING PRINTS
-    ldr r0, =outiLast
-    mov r1, r8
-    mov r2, r11
-    bl printf
+    @ @@ DEBUGGING PRINTS
+    @ ldr r0, =outiLast
+    @ mov r1, r8
+    @ mov r2, r11
+    @ bl printf
 
     cmp r8, r11              @ ( i - last ) == Set Zero Flag
     bne nextIndx             @ ( i-3 != 0  ) Z==0
