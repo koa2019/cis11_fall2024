@@ -1,10 +1,10 @@
 @ Danielle
 @ cis 11 Final Problem 1: Master Mind
 @ 12-07-2024
-@ Compile & run in terminal:            g++ final-9.s && ./a.out
+@ Compile & run in terminal:            g++ final-10.s && ./a.out
 @
 @ Version Notes:
-@ In setGuess() I added user validation to be greater or equal to zero. Used code from lab7 prob2.
+@ Reintialized code[] with random numbers. Used code from lab8.
 @ Check notes.txt
 
 .global main
@@ -12,21 +12,22 @@
 .align 4
 .section .rodata    @ readonly data   
 deref: .asciz "%d"
+derefC: .asciz "%d, "
 derefN: .asciz "%d\n"
 endl: .asciz "\n"
 outInstruct: .asciz "\n\tWelcome to Mastermind.\n\tGuess the 4 digit secret code.\n\tYou have 10 chances to win!\n\n"
-inOneDigit: .asciz "Input one digit and then press Enter: "    
+inOneDigit: .asciz "Input a positive integer and then press Enter: "    
 outInvalid: .asciz "\n\tInvalid Input. Number must be greater or equal to zero. Try again.\n"
 outTry: .asciz "\n\t     Attempt #%d:\n"
-outCode: .asciz "Code:  "
-outGuess: .asciz "Guess: "
+outCode: .asciz "\nSecret Code:  "
+outGuess: .asciz "Guess:        "
 outWrong: .asciz " is a Wrong Guess. Try Again.\n\n"
 outRight: .asciz "Right Guess! Congratulations You've Won! \n"    
 outI: .asciz "[%d]: "
-outEq: .asciz    "   %d  ==  %d\n"
-outNotEq:  .asciz "   ?  !=  %d\n"
-outVerifyMsg: .asciz "\n\tVerifying your code...\n      Code    User Guess\n"
-results: .asciz "\n--- Results ---\n"
+outEq: .asciz    "      %d  ==  %d\n"
+outNotEq:  .asciz "      ?  !=  %d\n"
+outVerifyMsg: .asciz "\n\tVerifying your code...\n      Secret Code    User Guess\n"
+results: .asciz "\n\t--- Results ---\n"
 outTy: .asciz "GAME OVER. Good Bye\n\n"
 
 
@@ -43,27 +44,41 @@ lastIndx: .word 3                   @ size-1
 main:                               @ int main(){
     push {lr}                       @ push link register r14 to top of stack
 
-    ldr r0, =outInstruct   
+    @@-------- SET RANDOM NUMBER SEED --------@@
+	mov r0, #0	    	@ r0=0
+	bl time  	     	@ gets current time time(0)
+	bl srand  	     	@ sets the seed for the puesdo random number generator
+		
+
+	@@-------- RESET ARRAY VALUES W/RANDOM NUMBER--------@@
+	ldr r0, =code		    @ load function's 1st parameter
+	ldr r1, =size	        @ load functions's 2nd parameter
+	ldr r1, [r1]            @ r1=size=4
+	bl setRandArr           @ setRandArr(code[],size)
+
+    ldr r0, =outInstruct    @ Print game's instructions
     bl printf          
 
     @ ------ User has 10 attempts to guess the correct code ------ @@
-    mov r4, #1                      @ i=1
+    mov r4, #1              @ i=1
     ldr r5, =numTrys
     ldr r5, [r5]
-    for:                            @ for(int i=1; i<=numTrys; i++){
-        cmp r4, r5                  @ ( i-numTrys ) ? Set Register Flags
-        bgt endForLoop              @ ( i > numTrys )
+    for:                    @ for(int i=1; i<=numTrys; i++){
+        cmp r4, r5          @ ( i-numTrys ) ? Set Register Flags
+        bgt endForLoop      @ ( i > numTrys )
 
+        @ FOR TESTING/GRADING PURPOSES: I'm printing the secret random code[]]
+        bl printSecret
         
-        ldr r0, =outTry             @ Output number of attempts to guess code
-        mov r1, r4                  @ r4=i
-        bl printf                   @ printf(outTry,i) 
+        ldr r0, =outTry     @ Output number of attempts to guess code
+        mov r1, r4          @ r4=i
+        bl printf           @ printf(outTry,i) 
 
         @@ -------------- Set user's guess in an array -------------- @@
         ldr r0, =guess  
         ldr r1, =size
         ldr r1, [r1]
-        bl setGuess                 @ setGuess(guess,size)
+        bl setGuess         @ setGuess(guess,size)
 
         
         @@ --------------  Check user's guess against the secret code --------------@@
@@ -114,6 +129,42 @@ main:                               @ int main(){
     @@ -------------------- FUNCTIONS -------------------- @@
     @@ --------------------------------------------------- @@
 
+
+@@-------- RESET ARRAY VALUES W/RANDOM NUMBER--------@@
+setRandArr:			@ setRandArr(int arr[], int size)
+@{
+ 	push {r4-r7, lr}
+	mov r4, r0		        @ load array before i loop
+	mov r5, r1			    @ r5=size=4
+	mov r6, #0 			    @ r6 = i = 0
+	forLoop:				@ for(i < 4)
+		
+		cmp r6, r5			@ (i-4)==? Set flags
+		bge forLoopEnd		@ if(i >= 25) then end loop
+
+		bl getRandNum	 	@ Call randNum() and returns r0=randNum
+		mov r7, r0	     	@ r7=random number
+
+		@ store a value into the array address	
+		str r7, [r4]		@ arr[i] = i; @ str source, [destination]
+			
+		@ Increment i and array address to next
+		add r4, #4			   @ increment array address
+		add r6, #1			   @ i++
+		bal forLoop			   @ keep looping
+
+	forLoopEnd:   			
+	pop {r4-r7, pc}
+@}
+
+@@ -------------------- Get and return a random number -------------------- @@
+getRandNum:
+@{
+	push {lr}
+	bl rand  	       @ calls the rand function
+	and r0, r0, #0xff  @ filters out the numbers to reasonable size without it you can get a 32bit number
+	pop {pc}
+@}
 
 
 @@ ---------------- int checkPassword code[],guess[],size) ---------------- @@
@@ -279,7 +330,7 @@ printArr: 				        @ void printArr(arr[], size){
         cmp r6, r5			    @ (i-size==set flags)
         bge printLoopEnd	    @ if(i >= size), then end loop
 
-        ldr r0, =deref	        @ load deref string
+        ldr r0, =derefC	        @ load deref string
         mov r1, r4              @ arr address
         ldr r1, [r1]		    @ arr[i]
         bl printf 			    @ printf(" %d", arr[i])
@@ -321,3 +372,19 @@ output2Arrays:
     bl printf 			@ printf("\n")
     pop {pc}
 @ }
+
+
+@ FOR TESTING/GRADING PURPOSES: I'm printing the secret random code[]]
+printSecret:
+@{   
+    push {lr}
+    ldr r0, =outCode
+	bl printf           @ printf(outCode); 		
+	ldr r0, =code		
+	ldr r1, =size
+	ldr r1, [r1]
+	bl printArr 		@ printArr(code,size=4)
+    ldr r0, =endl		@ load string
+    bl printf 			@ printf("\n")
+    pop {pc}
+@}
