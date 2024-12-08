@@ -1,7 +1,7 @@
 @ Danielle
 @ cis 11 Final Problem 1: Master Mind
 @ 12-05-2024
-@ Compile & run in terminal:            g++ final-7.s && ./a.out
+@ Compile & run in terminal:            g++ final-8.s && ./a.out
 @
 @ Version Notes:
 @ Need to change how the game prints out wrong guesses. It should print all 4 digits and then show which ones are right and wrong. As of now it will stop printing at the first occurence of a wrong digit guess.
@@ -22,9 +22,9 @@ outGuess: .asciz "Guess: "
 outWrong: .asciz " is a Wrong Guess. Try Again.\n\n"
 outRight: .asciz "Right Guess! Congratulations You've Won! \n"    
 outI: .asciz "[%d]: "
-outEq: .asciz " %d==%d\n"
-outNotEq:  .asciz " %d != ?\n"
-outVerifyMsg: .asciz "\tVerifying your code...\n"
+outEq: .asciz    "   %d  ==  %d\n"
+outNotEq:  .asciz "   ?  !=  %d\n"
+outVerifyMsg: .asciz "\tVerifying your code...\n      Code    User Guess\n"
 results: .asciz "\n--- Results ---\n"
 outTy: .asciz "GAME OVER. Good Bye\n\n"
 
@@ -158,20 +158,23 @@ checkPassword:            @ Check if user's guess is correct
         beq isRight                 @ if ( code[i] == guess[i] ) ? Z==1 True
         
 
-
+            @ printBoard(guess[], isGuess, indx)
             isWrong:                @ guess[i] does NOT equal code[i]
+
+                @forBoard:
+                @cmp
                 ldr r0, =outNotEq   
                 mov r1, r7          @ r7 = guess[i]
                 bl printf           @ printf(outNotEq,guess[i]);           
-                b endPWLoop         @ goto endPWLoop
-
+                @b endPWLoop         @ goto endPWLoop
+                b skipRight
             isRight:                @ guess[i] equals code[i]
                 ldr r0, =outEq
-                mov r1, r5          @ r5 = code[i]
-                mov r2, r7          @ r7 = guess[i]
+                mov r1, r7          @ r5 = code[i]
+                mov r2, r5          @ r7 = guess[i]
                 bl printf           @ printf( outEq, code[i], guess[i] );
 
-
+    skipRight:
     @@ -----------  if(i == last index)  ----------- @@
     ldr r11, =lastIndx
     ldr r11, [r11]
