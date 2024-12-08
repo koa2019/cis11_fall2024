@@ -1,12 +1,10 @@
 @ Danielle
 @ cis 11 Final Problem 1: Master Mind
-@ 12-05-2024
-@ Compile & run in terminal:            g++ final-8.s && ./a.out
+@ 12-07-2024
+@ Compile & run in terminal:            g++ final-9.s && ./a.out
 @
 @ Version Notes:
-@ Fixed Bug: created after changing how isWrong and isRight labels work. Bug cause if the last index is equal but all the other index are wrong, 
-@ it sets isTrue=true when it should be false.
-@ Changed how the game prints out wrong guesses. It now compares & print all 4 digits and then prints which ones are right and wrong. It used to stop printing at the first occurence of a wrong digit guess.
+@ In setGuess() I added user validation to be greater or equal to zero
 @ Check notes.txt
 
 .global main
@@ -18,6 +16,7 @@ derefN: .asciz "%d\n"
 endl: .asciz "\n"
 outInstruct: .asciz "\n\tWelcome to Mastermind.\n\tGuess the 4 digit secret code.\n\tYou have 10 chances to win!\n\n"
 inOneDigit: .asciz "Input one digit and then press Enter: "    
+outInvalid: .asciz "\n\tInvalid Input. Number must be greater or equal to zero. Try again.\n"
 outTry: .asciz "\n\t     Attempt #%d:\n"
 outCode: .asciz "Code:  "
 outGuess: .asciz "Guess: "
@@ -229,21 +228,36 @@ setGuess:               @ Set user's guess in an array
     mov r5, r1          @ r5=size
     mov r6, #0          @ i=0
     setGuessLoop:       @ for(int i=0i<sizei++){
+    cmp r6,r5           @ i-size==set flags
+    bge endSetGuess     @ if(i>=size), ? end loop
+    @{
+        doWhile:  @ Ask for user's input until it's a positive integer
+        @{        @ do...while(guess[i]<1)
+            ldr r0, =inOneDigit
+            bl printf       @ printf(inOneDigit)
+            
+            ldr r0, =deref
+            mov r1, r4      @ r1=guess
+            bl scanf        @ scanf("%d", &guess[i])
 
-        cmp r6,r5       @ i-size==set flags
-        bge endSetGuess @ if(i>=size), ? end loop
+            @ validate user input is positive integer
+            ldr r0, [r4]        @ load variable's address
+            cmp r0, #0          @ r4-1==set flags
+            bge incrmntSetGuess @ if( i>= 0) N==V
+            @{
+                @ invalid input message
+                ldr r0, =outInvalid
+                bl printf        
+                b doWhile         @ (guess[i]<1). N!=V
+            @}
+        @}
 
-        ldr r0, =inOneDigit
-        bl printf       @ printf(inOneDigit)
-        
-        ldr r0, =deref
-        mov r1, r4      @ r1=guess
-        bl scanf        @ scanf("%d", &guess[i])
-
-        @ increment i and array
+        incrmntSetGuess:@ increment i and array
         add r4, #4      @ guess[guessAddress+4bytes]
         add r6, #1      @ i++
         bal setGuessLoop
+        
+    @}
     endSetGuess: 
     pop {r4-r6, pc}
 @ }
