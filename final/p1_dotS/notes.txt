@@ -1,4 +1,8 @@
-* Need to change how the game prints out wrong guesses. It should print all 4 digits and then show which ones are right and wrong. 
+To do:
+
+* Figure out how to make the getRand() to generate smaller numbers. 0-9, or 10-99, 0-99?
+
+DONE * Need to change how the game prints out wrong guesses. It should print all 4 digits and then show which ones are right and wrong. 
   As of now it will stop printing at the first occurence of a wrong digit guess.
 
 DONE * final-7.s BUG after commenting setGuess() back in. numTrys=2 but after 2nd wrong guess it still 

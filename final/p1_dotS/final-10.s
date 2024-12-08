@@ -3,7 +3,7 @@
 @ 12-07-2024
 @ Compile & run in terminal:            g++ final-10.s && ./a.out
 @
-@ Version Notes:
+@ Version 10 Notes:
 @ Reintialized code[] with random numbers. Used code from lab8.
 @ Check notes.txt
 
