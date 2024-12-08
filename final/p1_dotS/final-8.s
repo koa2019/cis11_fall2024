@@ -4,7 +4,9 @@
 @ Compile & run in terminal:            g++ final-8.s && ./a.out
 @
 @ Version Notes:
-@ Need to change how the game prints out wrong guesses. It should print all 4 digits and then show which ones are right and wrong. As of now it will stop printing at the first occurence of a wrong digit guess.
+@ Bug: created after changing how isWrong and isRight labels work. Bug cause if the last index is equal but all the other index are wrong, 
+@ it sets isTrue=true when it should be false.
+@ Changed how the game prints out wrong guesses. It now compares & print all 4 digits and then prints which ones are right and wrong. It used to stop printing at the first occurence of a wrong digit guess.
 @ Check notes.txt
 
 .global main
@@ -124,8 +126,9 @@ checkPassword:            @ Check if user's guess is correct
     @ r7 = guess[i]
     @ r8 = i = 0
     @ r9 = r2 = size
-    @ r10 = return isTrue;
-    @ r11 = (size-1)
+    @ r10 = zeroTo3Correct @ r11 = (size-1)
+    @ r11 = return isTrue;
+
 
     push {r4-r11, lr}         @ protect these registers from this function from altering them
                           @ Get variables ready before loop starts 
@@ -133,7 +136,8 @@ checkPassword:            @ Check if user's guess is correct
     mov r6, r1            @ r5=guess[]
     mov r8, #0            @ r8=i=0;
     mov r9, r2            @ r9=size
-    mov r10, #0           @ return isTrue=false
+    mov r10, #1           @ r10=isZeroTo3Correct= 
+    mov r11, #0           @ r11=return isTrue=FALSE
     pWLoop:               @ for(i=0;i<size;i++){
         
         cmp r8, r9        @ (i-size)
@@ -141,8 +145,6 @@ checkPassword:            @ Check if user's guess is correct
 
         @@ ----------- Load code[i] ----------- @@
         ldr r5, [r4, r8, lsl #2]
-        @ add r4, r4, r8, lsl #2	@ r4 = array address -> code[code+(i*2^2bytes)]
-        @ ldr r5, [r4]		    @ r5 = code[i]
 
         @@ ----------- Load guess[i] ----------- @@
         ldr r7, [r6, r8, lsl #2]
@@ -159,42 +161,51 @@ checkPassword:            @ Check if user's guess is correct
         
 
             @ printBoard(guess[], isGuess, indx)
-            isWrong:                @ guess[i] does NOT equal code[i]
-
-                @forBoard:
-                @cmp
+            isWrong:                @ code[i] != guess [i]
+                mov r10, #0         @ isZeroTo3Correct=FALSE
                 ldr r0, =outNotEq   
                 mov r1, r7          @ r7 = guess[i]
                 bl printf           @ printf(outNotEq,guess[i]);           
                 @b endPWLoop         @ goto endPWLoop
-                b skipRight
-            isRight:                @ guess[i] equals code[i]
+                b checkIsLastIndxANDTrue
+            isRight:                @ code[i] == guess[i]
+                @mov r10, #1         @ isZeroTo3Correct=TRUE
                 ldr r0, =outEq
-                mov r1, r7          @ r5 = code[i]
-                mov r2, r5          @ r7 = guess[i]
+                mov r1, r5          @ r5 = code[i]
+                mov r2, r7          @ r7 = guess[i]
                 bl printf           @ printf( outEq, code[i], guess[i] );
 
-    skipRight:
-    @@ -----------  if(i == last index)  ----------- @@
-    ldr r11, =lastIndx
-    ldr r11, [r11]
 
-    cmp r8, r11                     @ ( i - last ) == Set Zero Flag
-    bne pwLoopIncrmnt               @ ( i-3 != 0  ) Z==0
-    beq checkLastIndx               @ 3-3==0 Z==1
+    @@ -----------  if(i == lastIndx AND isZeroTo3Correct == TRUE)  ----------- @@
+    checkIsLastIndxANDTrue:
+    ldr r0, =lastIndx
+    ldr r0, [r0]
 
-        checkLastIndx:        
-        ldr r5, [r4, r8, lsl #2]    @ Load code[i]        
-        ldr r7, [r6, r8, lsl #2]    @ Load guess[i] 
+    cmp r8, r0                      @ ( i - last ) == Set Zero Flag
+    bne pwLoopIncrmnt               @ ( i-3 != 0 ) ? Z==0 FALSE
+    beq checkZeroTo3                @ ( 3-3 == 0 ) ? Z==1 TRUE
 
-
-        @@ -----------  if(code[last] == guess[last]){  ----------- @@
-        cmp r5, r7                  @ ( code[last]  - guess[last] ) == Set Flags
-        bne pwLoopIncrmnt           @ ( code[last] != guess[last] ) ? Z==0 False :
-        beq setIsTrue               @ ( code[last] == guess[last] ) ? Z==1     
+            
+        @@ -----------  if(isZeroTo3Correct == TRUE)  ----------- @@
+        checkZeroTo3: 
+        cmp r10, #1                 @ ( isZeroTo3Correct - 1 ) == Set Zero Flag
+        bne pwLoopIncrmnt           @ ( 0-1==-1 ) ? Z==0 False :
+        beq checkLastIndx
         
-        setIsTrue:                  @ if(code[last] == guess[last])        
-        mov r10, #1                 @ set return isTrue=TRUE       
+
+            @@ -----------  if(code[last] == guess[last]){  ----------- @@
+            checkLastIndx:
+            ldr r5, [r4, r8, lsl #2]    @ Load code[i]        
+            ldr r7, [r6, r8, lsl #2]    @ Load guess[i] 
+
+           
+            cmp r5, r7                  @ ( code[last]  - guess[last] ) == Set Flags
+            bne pwLoopIncrmnt           @ ( code[last] != guess[last] ) ? Z==0 False : 
+            beq setIsTrue               @ ( 1-1==0 ) ? Z==1     
+            
+
+            setIsTrue:                  @ if(code[last] == guess[last])        
+            mov r11, #1                 @ set return isTrue=TRUE       
         bal endPWLoop             
 
     pwLoopIncrmnt:    
@@ -202,7 +213,7 @@ checkPassword:            @ Check if user's guess is correct
     bal pWLoop
 
     endPWLoop:
-    mov r0, r10          @ r0=r10. Set return register r0=isTrue
+    mov r0, r11          @ r0=r11. Set return register r0=isTrue
     pop {r4-r11, pc}         @ return r0 = bool isTrue;
 @ }
 
