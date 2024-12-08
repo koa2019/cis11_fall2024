@@ -1,6 +1,12 @@
 To do:
 
+* CHANGE numTrys TO 10 BEFORE SUBMITTING!
+
 * Figure out how to make the getRand() to generate smaller numbers. 0-9, or 10-99, 0-99?
+
+* Record video of the game running.
+
+* Take screenshots of how to compile, run and play the game and then put them into a document.
 
 DONE * Need to change how the game prints out wrong guesses. It should print all 4 digits and then show which ones are right and wrong. 
   As of now it will stop printing at the first occurence of a wrong digit guess.

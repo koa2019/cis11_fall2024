@@ -4,6 +4,7 @@
 @ Compile & run in terminal:            g++ final-10.s && ./a.out
 @
 @ Version 10 Notes:
+@ CHANGE numTrys TO 10 BEFORE SUBMITTING!
 @ Reintialized code[] with random numbers. Used code from lab8.
 @ Check notes.txt
 
