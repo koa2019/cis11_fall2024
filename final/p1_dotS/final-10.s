@@ -36,7 +36,7 @@ outTy: .asciz "GAME OVER. Good Bye\n\n"
 size: .word 4                       @ int size=4
 numTrys: .word 2                    @ Player gets 10 guesses  
 code: .word 6, 6, 1, 5
-guess: .word 6, 6, 1, 5             @ Player's 4 digit guess
+guess: .word 6, 2, 1, 5             @ Player's 4 digit guess
 lastIndx: .word 3                   @ size-1
 
 

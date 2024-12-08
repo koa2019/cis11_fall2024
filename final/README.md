@@ -1,4 +1,5 @@
 # cis11_fall2024 final project 1: Master Mind
+Date: December 07, 2024
 Hardware: Raspberry pi
 Languages: Assembly, C Language
 gitHub Repo: https://github.com/koa2019/cis11_fall2024/tree/master/final
@@ -13,7 +14,7 @@ Instructions to run program:
     * "cd Downloads" enter 
     * "cd df_cis11_final" enter
     3. To compile and build the game. In the terminal window type:
-        * "g++ final-8.s" enter
+        * "g++ final-10.s" enter
     4. To run the game. In the terminal window type:
         * "./a.out" 
     5. To play the game. In the terminal window:
