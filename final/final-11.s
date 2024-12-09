@@ -16,6 +16,8 @@ deref: .asciz "%d"
 derefC: .asciz "%d, "
 derefN: .asciz "%d\n"
 endl: .asciz "\n"
+outTesting1: .asciz "---------------------------------------------------\nFOR TESTING PURPOSES I'M DISPLAYING THE SECRET CODE"
+outTesting2: .asciz "---------------------------------------------------\n"
 outInstruct: .asciz "\n\tWelcome to Mastermind.\n\tGuess the 4 digit secret code.\n\tYou have 10 chances to win!\n\n"
 inOneDigit: .asciz "Input a positive integer and then press Enter: "    
 outInvalid: .asciz "\n\tInvalid Input. Number must be greater or equal to zero. Try again.\n"
@@ -25,9 +27,9 @@ outGuess: .asciz "Guess:        "
 outWrong: .asciz " is a Wrong Guess. Try Again.\n\n"
 outRight: .asciz "Right Guess! Congratulations You've Won! \n"    
 outI: .asciz "[%d]: "
-outEq: .asciz    "      %d  ==  %d\n"
-outNotEq:  .asciz "      ?  !=  %d\n"
-outVerifyMsg: .asciz "\n\tVerifying your code...\n      Secret Code    User Guess\n"
+outEq: .asciz    "    %d  ==  %d\n"
+outNotEq:  .asciz "    ?  !=  %d\n"
+outVerifyMsg: .asciz "\n\tVerifying your code...\n      Code      User Guess\n"
 results: .asciz "\n\t--- Results ---\n"
 outTy: .asciz "GAME OVER. Good Bye\n\n"
 
@@ -68,9 +70,17 @@ main:                               @ int main(){
         cmp r4, r5          @ ( i-numTrys ) ? Set Register Flags
         bgt endForLoop      @ ( i > numTrys )
 
+
+        @ ------------------------------------------------------------------- @
         @ FOR TESTING/GRADING PURPOSES: I'm printing the secret random code[]]
+        ldr r0, =outTesting1
+        bl printf
         bl printSecret
-        
+        ldr r0, =outTesting2
+        bl printf
+        @ ------------------------------------------------------------------- @
+
+
         ldr r0, =outTry     @ Output number of attempts to guess code
         mov r1, r4          @ r4=i
         bl printf           @ printf(outTry,i) 
@@ -107,9 +117,11 @@ main:                               @ int main(){
             b endForLoop
             
             notPassword:            @ isPassword==0 false
+                ldr r0, =endl
+                bl printf 
                 ldr r0, =guess      
                 ldr r1, =size
-                ldr r1, [r1]        
+                ldr r1, [r1]     
                 bl printArr         @ printArr(guess,size)
                 ldr r0, =outWrong    
                 bl printf           @ printf(outWrong)                       
@@ -163,7 +175,9 @@ getRandNum:
 @{
 	push {lr}
 	bl rand  	       @ calls the rand function
-	and r0, r0, #0xff  @ filters out the numbers to reasonable size without it you can get a 32bit number
+	@and r0, r0, #0xff  @ filters out the numbers to reasonable size without it you can get a 32bit number
+    and r0, r0, #0x99  @ filters out the numbers to 2 digits
+    lsr r0, #2
 	pop {pc}
 @}
 
