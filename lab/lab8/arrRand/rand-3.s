@@ -86,7 +86,8 @@ getRandNum:
 
 	bl rand  	     @ calls the rand function
 	and r0, r0, #0xff  @ filters out the numbers to reasonable size without it you can get a 32bit number
-
+	and r0, r0, #99
+	@lsr r0, 
 	pop {pc}
 
 

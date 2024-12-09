@@ -1,11 +1,11 @@
 @ Danielle
 @ cis 11 Final Problem 1: Master Mind
-@ 12-07-2024
+@ 12-09-2024
 @ Compile & run in terminal:            g++ final-10.s && ./a.out
 @
-@ Version 10 Notes:
-@ CHANGE numTrys TO 10 BEFORE SUBMITTING!
-@ Reintialized code[] with random numbers. Used code from lab8.
+@ Version 11 Notes:
+@ changed numTrys=10.
+@ Made the random numbers 1 to 2 digits by lsr #2
 @ Check notes.txt
 
 .global main
