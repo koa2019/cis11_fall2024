@@ -1,8 +1,8 @@
 @ Danielle
 @ cis 11 Final Problem 1: Master Mind
 @ 12-09-2024
-@ Compile & run in terminal:            g++ final-10.s && ./a.out
-@
+@ Compile & run in terminal:            g++ final-10.s 
+@                                       ./a.out
 @ Version 11 Notes:
 @ changed numTrys=10.
 @ Made the random numbers 1 to 2 digits by lsr #2
@@ -37,7 +37,7 @@ outTy: .asciz "GAME OVER. Good Bye\n\n"
 .align 4
 .section .data
 size: .word 4                       @ int size=4
-numTrys: .word 10                    @ Player gets 10 guesses  
+numTrys: .word 10                   @ Player gets 10 guesses  
 code: .word 6, 6, 1, 5
 guess: .word 6, 2, 1, 5             @ Player's 4 digit guess
 lastIndx: .word 3                   @ size-1
@@ -174,10 +174,10 @@ setRandArr:			@ setRandArr(int arr[], int size)
 getRandNum:
 @{
 	push {lr}
-	bl rand  	       @ calls the rand function
+	bl rand  	        @ calls the rand function
 	@and r0, r0, #0xff  @ filters out the numbers to reasonable size without it you can get a 32bit number
-    and r0, r0, #0x99  @ filters out the numbers to 2 digits
-    lsr r0, #2
+    and r0, r0, #0x99   @ filters out the numbers to reasonable size without it you can get a 32bit number
+    lsr r0, #2          @ make the random digit 1-2 digits big
 	pop {pc}
 @}
 
@@ -329,7 +329,6 @@ setGuess:               @ Set user's guess in an array
 @ }
 
 
-
 @@ -------------------- PRINT 1 Array -------------------- @@
 printArr: 				        @ void printArr(arr[], size){
 @ {
@@ -356,7 +355,6 @@ printArr: 				        @ void printArr(arr[], size){
     printLoopEnd:		
     pop {r4-r6, pc} 	        @ return;
 @ }
-
 
 
 @@ -------------------- PRINT code and guess arrays -------------------- @@

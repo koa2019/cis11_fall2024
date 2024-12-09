@@ -4,8 +4,7 @@ Hardware: Raspberry pi
 Languages: Assembly, C Language
 gitHub Repo: https://github.com/koa2019/cis11_fall2024/tree/master/final
 
-Please refer to terminal_inputs_screenshots.pdf for an example of how to run, compile, and play this game.
-
+Note: Please refer to imgs_terminal_instructions.pdf for an example of how to run, compile, and play this game.
 Instructions to run program:
 1. On your Raspberry pi, download df_cis11_final.zip to your "Downloads" Folder.
 2. Open a new "File Explorer " window, then
@@ -35,11 +34,11 @@ Instructions to run program:
 Object of the game:
 Guess a secret four integer code within 10 guesses.
 
-Description:
-The program generates a random four digit code and saves it to an array. Then it asks the user to guess the code. It validates that each of the user's inputs are greater or equal to zero, and then saves it to an array. The program checks if the user's guess is correct by comparing each index of the corresponding array. During each iteration of comparison, it prints out if the current indicies are equal or not. If the program in on the last index comparison, i=3 then it will check if the entire guess was correct or not and return a bool value to the main function. Main will print a message telling the user if their guess was correct or not. If correct the game will end. Else the program will allow the user to guess up to 10 times before ending.
+Game Description:
+The program generates a random four digit code and saves it to an array. Then it asks the user to guess the code. It validates that each of the user's inputs are greater or equal to zero, and then saves it to an array. The program checks if the user's guess is correct by comparing each index of the corresponding array. During each iteration of comparison, it prints out if the current indices are equal or not. If the program in on the last index comparison, i=3 then it will check if the entire guess was correct or not and return a bool value to the main function. Main will print a message telling the user if their guess was correct or not. If correct the game will end. Else the program will allow the user to guess up to 10 times before ending.
 
 Version History:
-Each verison has a short note on what was changed in that version.
+Each version has a short note on what was changed in that version.
 
 
 Project Instructions:
